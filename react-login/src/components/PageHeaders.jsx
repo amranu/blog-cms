@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { APP_CONFIG } from '../config/constants';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 import './PageHeaders.css';
 
 function PageHeaders() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const { siteName } = useSiteSettings();
 
   useEffect(() => {
     const userItem = localStorage.getItem('user');
@@ -223,7 +225,7 @@ function PageHeaders() {
           zIndex: 1002
         }}>
           <span style={{ fontSize: '22px' }}>📝</span>
-          <span>Blog CMS</span>
+          <span>{siteName}</span>
         </div>
       </div>
       
@@ -347,6 +349,29 @@ function PageHeaders() {
           >
             <span style={{ marginRight: '12px', fontSize: '18px' }}>📝</span>
             Manage Posts
+          </Link>
+
+          {/* Settings Section */}
+          <Link 
+          to="/settings"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '12px 20px',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '0 25px 25px 0',
+            margin: '8px 0',
+            transition: 'all 0.2s',
+            backgroundColor: window.location.pathname === '/settings' ? 'rgba(255,255,255,0.2)' : 'transparent',
+            fontSize: '15px',
+            fontWeight: '500'
+          }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.15)'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = window.location.pathname === '/settings' ? 'rgba(255,255,255,0.2)' : 'transparent'}
+          >
+            <span style={{ marginRight: '12px', fontSize: '18px' }}>⚙️</span>
+            Settings
           </Link>
 
           {/* User Account Section */}

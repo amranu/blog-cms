@@ -9,6 +9,7 @@ import WritePostPage from './pages/WritePostPage';
 import AdminDashboard from './pages/AdminDashboard';
 import BlogManagementPage from './pages/BlogManagementPage';
 import BlogPage from './pages/BlogPage';
+import SettingsPage from './pages/SettingsPage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path='/write-post' element={<WritePostPage />} />
           <Route path='/blog-management' element={<BlogManagementPage />} />
           <Route path='/admin' element={<AdminDashboard />} />
+          <Route path='/settings' element={<SettingsPage />} />
         </Routes>
       </AnalyticsProvider>
     </Router>

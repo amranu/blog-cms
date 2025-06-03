@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { API_ENDPOINTS, APP_CONFIG } from '../config/constants';
 import { useBlogPostAnalytics, useAnalytics } from '../hooks/useAnalytics';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 import LaTeXRenderer from '../components/LaTeXRenderer';
 
 const BlogPage = () => {
     const { slug } = useParams();
     const [posts, setPosts] = useState([]);
     const [currentPost, setCurrentPost] = useState(null);
+    const { siteName } = useSiteSettings();
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [filters, setFilters] = useState({
@@ -227,7 +229,7 @@ const BlogPage = () => {
                             }}>
                                 📚
                             </div>
-                            <span style={{ fontSize: '22px', fontWeight: '700' }}>BookWise Blog</span>
+                            <span style={{ fontSize: '22px', fontWeight: '700' }}>{siteName}</span>
                         </Link>
                         
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>

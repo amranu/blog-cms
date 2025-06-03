@@ -1,0 +1,35 @@
+.header {
+  position: absolute;
+  top: 0;
+  width: calc(100% - 200px);
+  padding: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+  margin-left: 200px;
+  transition: all 0.5s ease;
+}
+
+.header:hover {
+  background-color: #f8f9fa;
+}
+
+.logout-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 5px 10px;
+  color: blue;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.logout-button:hover {
+  color: red;
+}

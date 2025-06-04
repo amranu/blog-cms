@@ -124,9 +124,28 @@ def create_blog_models(db):
                 'meta_description': self.meta_description,
                 'created_at': self.created_at.isoformat()
             }
+
+    class Setting(db.Model):
+        __tablename__ = 'settings'
+        
+        id = db.Column(db.Integer, primary_key=True)
+        key = db.Column(db.String(100), unique=True, nullable=False)
+        value = db.Column(db.Text, nullable=False)
+        created_at = db.Column(db.DateTime, default=func.now())
+        updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now())
+        
+        def to_dict(self):
+            return {
+                'id': self.id,
+                'key': self.key,
+                'value': self.value,
+                'created_at': self.created_at.isoformat() if self.created_at else None,
+                'updated_at': self.updated_at.isoformat() if self.updated_at else None
+            }
     
     return {
         'BlogPost': BlogPost,
         'BlogComment': BlogComment,
-        'BlogCategory': BlogCategory
+        'BlogCategory': BlogCategory,
+        'Setting': Setting
     }

@@ -46,9 +46,15 @@ def token_required(f):
             current_app.logger.warning("Token verification failed")
             return jsonify({'error': 'Invalid or expired token'}), 401
         
+        # Get user object and pass to function
+        from models.user import User
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({'error': 'User not found'}), 401
+        
         # Add user_id to request context
         request.current_user_id = user_id
-        return f(*args, **kwargs)
+        return f(user, *args, **kwargs)
     return decorated
 
 def admin_required(f):
@@ -79,5 +85,5 @@ def admin_required(f):
         
         # Add user_id to request context
         request.current_user_id = user_id
-        return f(*args, **kwargs)
+        return f(user, *args, **kwargs)
     return decorated

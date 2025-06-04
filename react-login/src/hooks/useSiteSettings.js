@@ -17,7 +17,7 @@ export const useSiteSettings = () => {
         return;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/settings/site_name`, {
+      const response = await fetch(`${API_BASE_URL}/settings/site_name`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

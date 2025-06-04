@@ -1,19 +1,19 @@
 // Application configuration constants
 
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+export const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://isodigm.ca/api';
 
 export const API_ENDPOINTS = {
   // Authentication
-  LOGIN: `${API_BASE_URL}/login`,
-  REGISTER: `${API_BASE_URL}/register_user`,
+  LOGIN: `https://isodigm.ca/api/login`,
+  REGISTER: `https://isodigm.ca/api/register_user`,
   
   // Blog Posts
-  BLOG_POSTS: `${API_BASE_URL}/api/blog/posts`,
-  BLOG_POST_BY_ID: (id) => `${API_BASE_URL}/api/blog/posts/${id}`,
-  BLOG_POST_BY_SLUG: (slug) => `${API_BASE_URL}/api/blog/posts/${slug}`,
+  BLOG_POSTS: `${API_BASE_URL}/blog/posts`,
+  BLOG_POST_BY_ID: (id) => `${API_BASE_URL}/blog/posts/${id}`,
+  BLOG_POST_BY_SLUG: (slug) => `${API_BASE_URL}/blog/posts/${slug}`,
   
   // Categories
-  BLOG_CATEGORIES: `${API_BASE_URL}/api/blog/categories`,
+  BLOG_CATEGORIES: `${API_BASE_URL}/blog/categories`,
 };
 
 export const APP_CONFIG = {

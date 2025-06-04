@@ -49,10 +49,12 @@ def create_app(config_name=None):
     from routes.auth import auth_bp
     from routes.blog import blog_bp
     from routes.posts import posts_bp
+    from routes.settings import settings_bp
     
     app.register_blueprint(auth_bp)
     app.register_blueprint(blog_bp, url_prefix='/api/blog')
     app.register_blueprint(posts_bp)
+    app.register_blueprint(settings_bp, url_prefix='/api')
     
     # Create database tables
     with app.app_context():

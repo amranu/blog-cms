@@ -4,18 +4,17 @@ Blog CMS routes
 import re
 from datetime import datetime
 from flask import Blueprint, request, jsonify, current_app
-from blog_models import create_blog_models
 from utils.validation import sanitize_input, validate_blog_post
 from utils.auth import token_required, admin_required
 from __init__ import db
+from shared_models import get_blog_post, get_blog_comment, get_blog_category
 
 blog_bp = Blueprint('blog', __name__)
 
 # Initialize blog models
-blog_models = create_blog_models(db)
-BlogPost = blog_models['BlogPost']
-BlogComment = blog_models['BlogComment']
-BlogCategory = blog_models['BlogCategory']
+BlogPost = get_blog_post()
+BlogComment = get_blog_comment()
+BlogCategory = get_blog_category()
 
 @blog_bp.route('/posts', methods=['GET'])
 def get_blog_posts():

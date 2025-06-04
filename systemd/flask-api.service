@@ -1,0 +1,15 @@
+[Unit]
+Description=Flask API for Blog CMS
+After=network.target
+
+[Service]
+Type=exec
+User=root
+WorkingDirectory=/root/blog-cms/flask-api
+Environment=PATH=/root/blog-cms/flask-api/venv/bin
+ExecStart=/root/blog-cms/flask-api/venv/bin/gunicorn --bind 127.0.0.1:5000 --workers 3 api:app
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

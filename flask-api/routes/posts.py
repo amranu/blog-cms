@@ -15,7 +15,7 @@ def get_posts():
 
 @posts_bp.route('/posts', methods=['POST'])
 @admin_required
-def create_post():
+def create_post(user):
     if not request.json or 'title' not in request.json or 'content' not in request.json or 'publisher_id' not in request.json:
         abort(400)
     data = request.json
@@ -34,7 +34,7 @@ def get_post(post_id):
 
 @posts_bp.route('/posts/<int:post_id>', methods=['PUT'])
 @admin_required
-def update_post(post_id):
+def update_post(user, post_id):
     post = Post.query.get_or_404(post_id)
     data = request.json
     post.title = data.get('title', post.title)
@@ -44,7 +44,7 @@ def update_post(post_id):
 
 @posts_bp.route('/posts/<int:post_id>', methods=['DELETE'])
 @admin_required
-def delete_post(post_id):
+def delete_post(user, post_id):
     post = Post.query.get_or_404(post_id)
     db.session.delete(post)
     db.session.commit()

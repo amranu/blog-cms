@@ -36,7 +36,7 @@ def login():
 
 @auth_bp.route('/register_user', methods=['POST'])
 @admin_required
-def register_user():
+def register_user(user):
     data = request.json
     
     # Input validation

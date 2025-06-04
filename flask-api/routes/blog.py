@@ -85,7 +85,7 @@ def get_blog_post_by_id(post_id):
 
 @blog_bp.route('/posts', methods=['POST'])
 @admin_required
-def create_blog_post():
+def create_blog_post(user):
     """Create a new blog post"""
     try:
         data = request.json
@@ -160,7 +160,7 @@ def create_blog_post():
 
 @blog_bp.route('/posts/<int:post_id>', methods=['PUT'])
 @admin_required
-def update_blog_post(post_id):
+def update_blog_post(user, post_id):
     """Update an existing blog post"""
     try:
         data = request.json
@@ -221,7 +221,7 @@ def update_blog_post(post_id):
 
 @blog_bp.route('/posts/<int:post_id>', methods=['DELETE'])
 @admin_required
-def delete_blog_post(post_id):
+def delete_blog_post(user, post_id):
     """Delete a blog post"""
     try:
         post = BlogPost.query.get_or_404(post_id)
@@ -242,7 +242,7 @@ def get_blog_categories():
 
 @blog_bp.route('/categories', methods=['POST'])
 @admin_required
-def create_blog_category():
+def create_blog_category(user):
     """Create a new blog category"""
     data = request.json
     

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { API_ENDPOINTS, APP_CONFIG } from '../config/constants';
 import { useBlogPostAnalytics, useAnalytics } from '../hooks/useAnalytics';
-import { useSiteSettings } from '../hooks/useSiteSettings';
+import { useSiteContext } from '../contexts/SiteContext';
 import LaTeXRenderer from '../components/LaTeXRenderer';
 
 const BlogPage = () => {
     const { slug } = useParams();
     const [posts, setPosts] = useState([]);
     const [currentPost, setCurrentPost] = useState(null);
-    const { siteName } = useSiteSettings();
+    const { siteName } = useSiteContext();
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [filters, setFilters] = useState({

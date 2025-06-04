@@ -4,8 +4,9 @@ After=network.target
 
 [Service]
 Type=simple
-User=root
-WorkingDirectory=/root/blog-cms/react-login
+User=blogcms
+Group=blogcms
+WorkingDirectory=/opt/blog-cms/react-login
 Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 Environment=NODE_OPTIONS=--openssl-legacy-provider
 Environment=BROWSER=none

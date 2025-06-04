@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useAnalytics } from './hooks/useAnalytics';
+import { SiteProvider } from './contexts/SiteContext';
 import './theme.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -14,20 +15,22 @@ import SettingsPage from './pages/SettingsPage';
 function App() {
   return (
     <Router>
-      <AnalyticsProvider>
-        <Routes>
-          <Route path='/' element={<BlogPage />} />
-          <Route path='/blog' element={<BlogPage />} />
-          <Route path='/blog/:slug' element={<BlogPage />} />
-          <Route path='/home' element={<Navigate to="/admin" replace />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/write-post' element={<WritePostPage />} />
-          <Route path='/blog-management' element={<BlogManagementPage />} />
-          <Route path='/admin' element={<AdminDashboard />} />
-          <Route path='/settings' element={<SettingsPage />} />
-        </Routes>
-      </AnalyticsProvider>
+      <SiteProvider>
+        <AnalyticsProvider>
+          <Routes>
+            <Route path='/' element={<BlogPage />} />
+            <Route path='/blog' element={<BlogPage />} />
+            <Route path='/blog/:slug' element={<BlogPage />} />
+            <Route path='/home' element={<Navigate to="/admin" replace />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/write-post' element={<WritePostPage />} />
+            <Route path='/blog-management' element={<BlogManagementPage />} />
+            <Route path='/admin' element={<AdminDashboard />} />
+            <Route path='/settings' element={<SettingsPage />} />
+          </Routes>
+        </AnalyticsProvider>
+      </SiteProvider>
     </Router>
   );
 }

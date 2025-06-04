@@ -42,6 +42,10 @@ The easiest way to get started is using Docker. This method automatically handle
 git clone https://github.com/amranu/blog-cms.git
 cd blog-cms
 
+# Configure your domain (optional)
+cp .env.example .env
+# Edit .env to set your DOMAIN_NAME (defaults to localhost)
+
 # Start the application
 docker compose up -d
 
@@ -123,10 +127,22 @@ For production deployment with systemd services, see the detailed instructions i
 ## Configuration
 
 ### Environment Variables
+
+#### Docker Configuration
+- `DOMAIN_NAME`: Your domain name for nginx configuration (defaults to `localhost`)
+
+#### Flask Configuration  
 - `FLASK_ENV`: Set to `production` for production deployment
 - `DATABASE_URL`: Database connection string (defaults to SQLite)
 - `SECRET_KEY`: Flask secret key for session management
 - `JWT_SECRET_KEY`: Secret key for JWT token generation
+
+#### Example Configuration
+Copy `.env.example` to `.env` and customize:
+```bash
+cp .env.example .env
+# Edit .env with your domain and security keys
+```
 
 ### Default Admin User
 On first run, you can create an admin user:

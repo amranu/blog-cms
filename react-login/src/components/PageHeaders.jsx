@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { APP_CONFIG } from '../config/constants';
-import { useSiteSettings } from '../hooks/useSiteSettings';
+import { useSiteContext } from '../contexts/SiteContext';
 import './PageHeaders.css';
 
 function PageHeaders() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
-  const { siteName } = useSiteSettings();
+  const { siteName } = useSiteContext();
 
   useEffect(() => {
     const userItem = localStorage.getItem('user');

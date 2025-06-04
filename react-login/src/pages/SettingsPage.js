@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE_URL } from '../config/constants';
+import { useSiteContext } from '../contexts/SiteContext';
 import AdminLayout from '../components/AdminLayout';
 
 const SettingsPage = () => {
+  const { refreshSiteName } = useSiteContext();
   const [settings, setSettings] = useState({
     site_name: ''
   });
@@ -57,10 +59,8 @@ const SettingsPage = () => {
 
       if (response.ok) {
         setMessage('Settings saved successfully!');
-        // Reload the page to update all references to the site name
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+        // Refresh the site name in context to update all references
+        refreshSiteName();
       } else {
         const data = await response.json();
         setError(data.error || 'Failed to save settings');

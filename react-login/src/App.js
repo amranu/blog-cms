@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useAnalytics } from './hooks/useAnalytics';
-import { SiteProvider } from './contexts/SiteContext';
+import { SiteProvider, useSiteContext } from './contexts/SiteContext';
 import './theme.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -12,10 +12,22 @@ import BlogManagementPage from './pages/BlogManagementPage';
 import BlogPage from './pages/BlogPage';
 import SettingsPage from './pages/SettingsPage';
 
+// Component to update document title based on site name
+function DocumentTitle() {
+  const { siteName } = useSiteContext();
+  
+  useEffect(() => {
+    document.title = siteName;
+  }, [siteName]);
+  
+  return null;
+}
+
 function App() {
   return (
     <Router>
       <SiteProvider>
+        <DocumentTitle />
         <AnalyticsProvider>
           <Routes>
             <Route path='/' element={<BlogPage />} />

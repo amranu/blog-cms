@@ -229,7 +229,7 @@ const BlogPage = () => {
                             }}>
                                 📚
                             </div>
-                            <span style={{ fontSize: '22px', fontWeight: '700' }}>{siteName}</span>
+                            <span style={{ fontSize: '22px', fontWeight: '700' }}>{siteName || 'Blog CMS'}</span>
                         </Link>
                         
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>

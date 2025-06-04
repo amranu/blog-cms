@@ -54,6 +54,19 @@ def update_settings(current_user):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+@settings_bp.route('/settings/site_name', methods=['GET'])
+def get_site_name():
+    """Get site name (public endpoint)"""
+    try:
+        setting = Setting.query.filter_by(key='site_name').first()
+        if setting:
+            return jsonify({'value': setting.value}), 200
+        else:
+            return jsonify({'value': 'Blog CMS'}), 200
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @settings_bp.route('/settings/<key>', methods=['GET'])
 @token_required
 def get_setting(current_user, key):

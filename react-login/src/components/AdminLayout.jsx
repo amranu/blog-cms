@@ -10,7 +10,8 @@ const AdminLayout = ({ children }) => {
         paddingTop: '85px',
         padding: '85px 30px 30px 30px',
         minHeight: '100vh',
-        backgroundColor: '#f8fafc'
+        background: '#0f172a',
+        color: '#f1f5f9'
       }}>
         {children}
       </div>

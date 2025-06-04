@@ -100,7 +100,7 @@ const AdminDashboard = () => {
                     paddingTop: '85px',
                     padding: '85px 20px 20px 20px',
                     minHeight: '100vh',
-                    backgroundColor: '#f8fafc'
+                    backgroundColor: '#0f172a'
                 }}>
                     <div style={{
                         display: 'flex',
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
                         <div style={{
                             width: '40px',
                             height: '40px',
-                            border: '4px solid #e5e7eb',
+                            border: '4px solid #475569',
                             borderTop: '4px solid #3b82f6',
                             borderRadius: '50%',
                             animation: 'spin 1s linear infinite',
@@ -133,7 +133,7 @@ const AdminDashboard = () => {
                 paddingTop: '85px',
                 padding: '85px 20px 20px 20px',
                 minHeight: '100vh',
-                backgroundColor: '#f8fafc'
+                backgroundColor: '#0f172a'
             }}>
                 {/* Welcome Section */}
                 <div style={{
@@ -170,15 +170,15 @@ const AdminDashboard = () => {
                 }}>
                     {/* Total Posts */}
                     <div style={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#1e293b',
                         borderRadius: '12px',
                         padding: '20px',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                        border: '1px solid #e5e7eb'
+                        border: '1px solid #475569'
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <div style={{
-                                backgroundColor: '#dbeafe',
+                                backgroundColor: '#334155',
                                 borderRadius: '8px',
                                 padding: '8px',
                                 marginRight: '15px'
@@ -193,7 +193,7 @@ const AdminDashboard = () => {
                                     fontWeight: '500'
                                 }}>Total Articles</p>
                                 <p style={{ 
-                                    color: '#111827', 
+                                    color: '#f1f5f9', 
                                     fontSize: '24px', 
                                     fontWeight: '700',
                                     margin: 0
@@ -204,15 +204,15 @@ const AdminDashboard = () => {
 
                     {/* Published Posts */}
                     <div style={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#1e293b',
                         borderRadius: '12px',
                         padding: '20px',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                        border: '1px solid #e5e7eb'
+                        border: '1px solid #475569'
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <div style={{
-                                backgroundColor: '#dcfce7',
+                                backgroundColor: '#334155',
                                 borderRadius: '8px',
                                 padding: '8px',
                                 marginRight: '15px'
@@ -227,7 +227,7 @@ const AdminDashboard = () => {
                                     fontWeight: '500'
                                 }}>Published</p>
                                 <p style={{ 
-                                    color: '#111827', 
+                                    color: '#f1f5f9', 
                                     fontSize: '24px', 
                                     fontWeight: '700',
                                     margin: 0
@@ -238,15 +238,15 @@ const AdminDashboard = () => {
 
                     {/* Draft Posts */}
                     <div style={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#1e293b',
                         borderRadius: '12px',
                         padding: '20px',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                        border: '1px solid #e5e7eb'
+                        border: '1px solid #475569'
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <div style={{
-                                backgroundColor: '#fef3c7',
+                                backgroundColor: '#334155',
                                 borderRadius: '8px',
                                 padding: '8px',
                                 marginRight: '15px'
@@ -261,7 +261,7 @@ const AdminDashboard = () => {
                                     fontWeight: '500'
                                 }}>Drafts</p>
                                 <p style={{ 
-                                    color: '#111827', 
+                                    color: '#f1f5f9', 
                                     fontSize: '24px', 
                                     fontWeight: '700',
                                     margin: 0
@@ -272,15 +272,15 @@ const AdminDashboard = () => {
 
                     {/* Categories */}
                     <div style={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#1e293b',
                         borderRadius: '12px',
                         padding: '20px',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                        border: '1px solid #e5e7eb'
+                        border: '1px solid #475569'
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <div style={{
-                                backgroundColor: '#f3e8ff',
+                                backgroundColor: '#334155',
                                 borderRadius: '8px',
                                 padding: '8px',
                                 marginRight: '15px'
@@ -295,7 +295,7 @@ const AdminDashboard = () => {
                                     fontWeight: '500'
                                 }}>Categories</p>
                                 <p style={{ 
-                                    color: '#111827', 
+                                    color: '#f1f5f9', 
                                     fontSize: '24px', 
                                     fontWeight: '700',
                                     margin: 0
@@ -313,16 +313,16 @@ const AdminDashboard = () => {
                 }}>
                     {/* Quick Actions */}
                     <div style={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#1e293b',
                         borderRadius: '12px',
                         padding: '25px',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                        border: '1px solid #e5e7eb'
+                        border: '1px solid #475569'
                     }}>
                         <h3 style={{ 
                             fontSize: '18px', 
                             fontWeight: '600', 
-                            color: '#111827',
+                            color: '#f1f5f9',
                             marginBottom: '20px',
                             margin: '0 0 20px 0'
                         }}>Quick Actions</h3>
@@ -334,15 +334,15 @@ const AdminDashboard = () => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     padding: '15px',
-                                    backgroundColor: '#f0f9ff',
+                                    backgroundColor: '#475569',
                                     borderRadius: '8px',
                                     textDecoration: 'none',
-                                    color: '#111827',
+                                    color: '#f1f5f9',
                                     transition: 'background-color 0.2s',
-                                    border: '1px solid #e0f2fe'
+                                    border: '1px solid #475569'
                                 }}
-                                onMouseEnter={(e) => e.target.style.backgroundColor = '#e0f2fe'}
-                                onMouseLeave={(e) => e.target.style.backgroundColor = '#f0f9ff'}
+                                onMouseEnter={(e) => e.target.style.backgroundColor = '#64748b'}
+                                onMouseLeave={(e) => e.target.style.backgroundColor = '#475569'}
                             >
                                 <div style={{
                                     fontSize: '20px',
@@ -370,15 +370,15 @@ const AdminDashboard = () => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     padding: '15px',
-                                    backgroundColor: '#f0fdf4',
+                                    backgroundColor: '#475569',
                                     borderRadius: '8px',
                                     textDecoration: 'none',
-                                    color: '#111827',
+                                    color: '#f1f5f9',
                                     transition: 'background-color 0.2s',
-                                    border: '1px solid #dcfce7'
+                                    border: '1px solid #475569'
                                 }}
-                                onMouseEnter={(e) => e.target.style.backgroundColor = '#dcfce7'}
-                                onMouseLeave={(e) => e.target.style.backgroundColor = '#f0fdf4'}
+                                onMouseEnter={(e) => e.target.style.backgroundColor = '#64748b'}
+                                onMouseLeave={(e) => e.target.style.backgroundColor = '#475569'}
                             >
                                 <div style={{
                                     fontSize: '20px',
@@ -406,15 +406,15 @@ const AdminDashboard = () => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     padding: '15px',
-                                    backgroundColor: '#faf5ff',
+                                    backgroundColor: '#475569',
                                     borderRadius: '8px',
                                     textDecoration: 'none',
-                                    color: '#111827',
+                                    color: '#f1f5f9',
                                     transition: 'background-color 0.2s',
-                                    border: '1px solid #f3e8ff'
+                                    border: '1px solid #475569'
                                 }}
-                                onMouseEnter={(e) => e.target.style.backgroundColor = '#f3e8ff'}
-                                onMouseLeave={(e) => e.target.style.backgroundColor = '#faf5ff'}
+                                onMouseEnter={(e) => e.target.style.backgroundColor = '#64748b'}
+                                onMouseLeave={(e) => e.target.style.backgroundColor = '#475569'}
                             >
                                 <div style={{
                                     fontSize: '20px',
@@ -440,11 +440,11 @@ const AdminDashboard = () => {
 
                     {/* Recent Posts */}
                     <div style={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#1e293b',
                         borderRadius: '12px',
                         padding: '25px',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                        border: '1px solid #e5e7eb'
+                        border: '1px solid #475569'
                     }}>
                         <div style={{ 
                             display: 'flex', 
@@ -455,7 +455,7 @@ const AdminDashboard = () => {
                             <h3 style={{ 
                                 fontSize: '18px', 
                                 fontWeight: '600', 
-                                color: '#111827',
+                                color: '#f1f5f9',
                                 margin: 0
                             }}>Recent Articles</h3>
                             <Link
@@ -478,14 +478,14 @@ const AdminDashboard = () => {
                                         display: 'flex',
                                         alignItems: 'center',
                                         padding: '12px',
-                                        backgroundColor: '#f9fafb',
+                                        backgroundColor: '#334155',
                                         borderRadius: '8px',
                                         transition: 'background-color 0.2s'
                                     }}>
                                         <div style={{
                                             width: '35px',
                                             height: '35px',
-                                            backgroundColor: '#e5e7eb',
+                                            backgroundColor: '#475569',
                                             borderRadius: '6px',
                                             display: 'flex',
                                             alignItems: 'center',
@@ -500,7 +500,7 @@ const AdminDashboard = () => {
                                         <div style={{ flex: 1 }}>
                                             <h4 style={{
                                                 fontWeight: '500',
-                                                color: '#111827',
+                                                color: '#f1f5f9',
                                                 margin: '0 0 4px 0',
                                                 fontSize: '14px',
                                                 overflow: 'hidden',
@@ -515,8 +515,8 @@ const AdminDashboard = () => {
                                                     fontSize: '11px',
                                                     fontWeight: '500',
                                                     borderRadius: '12px',
-                                                    backgroundColor: post.status === 'published' ? '#dcfce7' : '#fef3c7',
-                                                    color: post.status === 'published' ? '#16a34a' : '#d97706'
+                                                    backgroundColor: '#334155',
+                                                    color: post.status === 'published' ? '#22c55e' : '#fbbf24'
                                                 }}>
                                                     {post.status}
                                                 </span>
@@ -544,7 +544,7 @@ const AdminDashboard = () => {
                                 <h4 style={{
                                     fontSize: '16px',
                                     fontWeight: '600',
-                                    color: '#111827',
+                                    color: '#f1f5f9',
                                     margin: '0 0 8px 0'
                                 }}>No articles yet</h4>
                                 <p style={{

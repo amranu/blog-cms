@@ -312,9 +312,9 @@ const BlogManagementPage = () => {
 
     const getStatusBadge = (status) => {
         const statusConfig = {
-            draft: { emoji: '✏️', bg: '#fef3c7', color: '#d97706', border: '#fed7aa' },
-            published: { emoji: '✅', bg: '#dcfce7', color: '#16a34a', border: '#bbf7d0' },
-            archived: { emoji: '📦', bg: '#fee2e2', color: '#dc2626', border: '#fecaca' }
+            draft: { emoji: '✏️', bg: '#334155', color: '#fbbf24', border: '#475569' },
+            published: { emoji: '✅', bg: '#334155', color: '#22c55e', border: '#475569' },
+            archived: { emoji: '📦', bg: '#334155', color: '#f87171', border: '#475569' }
         };
         
         const config = statusConfig[status] || statusConfig.draft;
@@ -340,7 +340,7 @@ const BlogManagementPage = () => {
 
     if (activeView === 'create') {
         return (
-            <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+            <div style={{ minHeight: '100vh', backgroundColor: '#0f172a' }}>
                 <PageHeaders />
                 <div style={{
                     marginLeft: '250px',
@@ -358,7 +358,7 @@ const BlogManagementPage = () => {
 
     if (activeView === 'edit') {
         return (
-            <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+            <div style={{ minHeight: '100vh', backgroundColor: '#0f172a' }}>
                 <PageHeaders />
                 <div style={{
                     marginLeft: '250px',
@@ -379,7 +379,7 @@ const BlogManagementPage = () => {
     }
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+        <div style={{ minHeight: '100vh', backgroundColor: '#0f172a' }}>
             <PageHeaders />
             <div style={{
                 marginLeft: '250px',
@@ -390,7 +390,7 @@ const BlogManagementPage = () => {
                 <div style={{
                     marginBottom: '32px',
                     paddingBottom: '24px',
-                    borderBottom: '1px solid #e5e7eb'
+                    borderBottom: '1px solid #475569'
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -411,7 +411,7 @@ const BlogManagementPage = () => {
                                 <h1 style={{
                                     fontSize: '28px',
                                     fontWeight: '700',
-                                    color: '#111827',
+                                    color: '#f1f5f9',
                                     margin: '0 0 4px 0'
                                 }}>
                                     Blog Management
@@ -461,10 +461,10 @@ const BlogManagementPage = () => {
 
                 {/* Filters Section */}
                 <div style={{
-                    backgroundColor: 'white',
+                    backgroundColor: '#1e293b',
                     borderRadius: '16px',
                     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid #475569',
                     padding: '24px',
                     marginBottom: '24px'
                 }}>
@@ -477,7 +477,7 @@ const BlogManagementPage = () => {
                         <div style={{
                             width: '32px',
                             height: '32px',
-                            backgroundColor: '#dbeafe',
+                            backgroundColor: '#334155',
                             borderRadius: '8px',
                             display: 'flex',
                             alignItems: 'center',
@@ -489,7 +489,7 @@ const BlogManagementPage = () => {
                         <h3 style={{
                             fontSize: '18px',
                             fontWeight: '600',
-                            color: '#111827',
+                            color: '#f1f5f9',
                             margin: 0
                         }}>
                             Filter Posts
@@ -506,7 +506,7 @@ const BlogManagementPage = () => {
                                 display: 'block',
                                 fontSize: '14px',
                                 fontWeight: '500',
-                                color: '#374151',
+                                color: '#cbd5e1',
                                 marginBottom: '8px'
                             }}>
                                 📊 Status
@@ -517,11 +517,11 @@ const BlogManagementPage = () => {
                                 style={{
                                     width: '100%',
                                     padding: '10px 14px',
-                                    border: '1px solid #d1d5db',
+                                    border: '1px solid #475569',
                                     borderRadius: '8px',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    color: '#374151',
+                                    backgroundColor: '#1e293b',
+                                    color: '#cbd5e1',
                                     outline: 'none',
                                     transition: 'all 0.2s'
                                 }}
@@ -530,7 +530,7 @@ const BlogManagementPage = () => {
                                     e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                                 }}
                                 onBlur={(e) => {
-                                    e.target.style.borderColor = '#d1d5db';
+                                    e.target.style.borderColor = '#475569';
                                     e.target.style.boxShadow = 'none';
                                 }}
                             >
@@ -545,7 +545,7 @@ const BlogManagementPage = () => {
                                 display: 'block',
                                 fontSize: '14px',
                                 fontWeight: '500',
-                                color: '#374151',
+                                color: '#cbd5e1',
                                 marginBottom: '8px'
                             }}>
                                 🏷️ Category
@@ -556,11 +556,11 @@ const BlogManagementPage = () => {
                                 style={{
                                     width: '100%',
                                     padding: '10px 14px',
-                                    border: '1px solid #d1d5db',
+                                    border: '1px solid #475569',
                                     borderRadius: '8px',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    color: '#374151',
+                                    backgroundColor: '#1e293b',
+                                    color: '#cbd5e1',
                                     outline: 'none',
                                     transition: 'all 0.2s'
                                 }}
@@ -569,7 +569,7 @@ const BlogManagementPage = () => {
                                     e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                                 }}
                                 onBlur={(e) => {
-                                    e.target.style.borderColor = '#d1d5db';
+                                    e.target.style.borderColor = '#475569';
                                     e.target.style.boxShadow = 'none';
                                 }}
                             >
@@ -591,9 +591,9 @@ const BlogManagementPage = () => {
                                     gap: '8px',
                                     width: '100%',
                                     padding: '10px 16px',
-                                    backgroundColor: '#f3f4f6',
-                                    color: '#374151',
-                                    border: '1px solid #d1d5db',
+                                    backgroundColor: '#334155',
+                                    color: '#cbd5e1',
+                                    border: '1px solid #475569',
                                     borderRadius: '8px',
                                     fontSize: '14px',
                                     fontWeight: '500',
@@ -601,11 +601,11 @@ const BlogManagementPage = () => {
                                     transition: 'all 0.2s'
                                 }}
                                 onMouseEnter={(e) => {
-                                    e.target.style.backgroundColor = '#e5e7eb';
+                                    e.target.style.backgroundColor = '#475569';
                                     e.target.style.transform = 'translateY(-1px)';
                                 }}
                                 onMouseLeave={(e) => {
-                                    e.target.style.backgroundColor = '#f3f4f6';
+                                    e.target.style.backgroundColor = '#334155';
                                     e.target.style.transform = 'translateY(0)';
                                 }}
                             >
@@ -618,15 +618,15 @@ const BlogManagementPage = () => {
 
                 {/* Posts List */}
                 <div style={{
-                    backgroundColor: 'white',
+                    backgroundColor: '#1e293b',
                     borderRadius: '16px',
                     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid #475569',
                     overflow: 'hidden'
                 }}>
                     <div style={{
                         padding: '24px',
-                        borderBottom: '1px solid #e5e7eb',
+                        borderBottom: '1px solid #475569',
                         background: APP_CONFIG.THEME.BACKGROUND_LIGHT
                     }}>
                         <div style={{
@@ -650,7 +650,7 @@ const BlogManagementPage = () => {
                             <h3 style={{
                                 fontSize: '18px',
                                 fontWeight: '600',
-                                color: '#111827',
+                                color: '#f1f5f9',
                                 margin: 0
                             }}>
                                 Blog Posts ({pagination.total})
@@ -670,7 +670,7 @@ const BlogManagementPage = () => {
                             <div style={{
                                 width: '40px',
                                 height: '40px',
-                                border: '4px solid #e5e7eb',
+                                border: '4px solid #475569',
                                 borderTop: '4px solid #3b82f6',
                                 borderRadius: '50%',
                                 animation: 'spin 1s linear infinite'
@@ -688,12 +688,12 @@ const BlogManagementPage = () => {
                                     key={post.id} 
                                     style={{
                                         padding: '24px',
-                                        borderBottom: '1px solid #f3f4f6',
+                                        borderBottom: '1px solid #475569',
                                         transition: 'all 0.2s',
                                         cursor: 'pointer'
                                     }}
                                     onMouseEnter={(e) => {
-                                        e.currentTarget.style.backgroundColor = '#f8fafc';
+                                        e.currentTarget.style.backgroundColor = '#334155';
                                     }}
                                     onMouseLeave={(e) => {
                                         e.currentTarget.style.backgroundColor = 'transparent';
@@ -710,7 +710,7 @@ const BlogManagementPage = () => {
                                                 <h3 style={{
                                                     fontSize: '18px',
                                                     fontWeight: '600',
-                                                    color: '#111827',
+                                                    color: '#f1f5f9',
                                                     margin: 0
                                                 }}>
                                                     {post.title}
@@ -744,14 +744,14 @@ const BlogManagementPage = () => {
                                                     <span>👤</span>
                                                     <span>By {post.author}</span>
                                                 </div>
-                                                <span style={{ color: '#d1d5db' }}>•</span>
+                                                <span style={{ color: '#475569' }}>•</span>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                     <span>📅</span>
                                                     <span>{formatDate(post.created_at)}</span>
                                                 </div>
                                                 {post.published_at && (
                                                     <>
-                                                        <span style={{ color: '#d1d5db' }}>•</span>
+                                                        <span style={{ color: '#475569' }}>•</span>
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                             <span>🚀</span>
                                                             <span>Published {formatDate(post.published_at)}</span>
@@ -760,10 +760,10 @@ const BlogManagementPage = () => {
                                                 )}
                                                 {post.category && (
                                                     <>
-                                                        <span style={{ color: '#d1d5db' }}>•</span>
+                                                        <span style={{ color: '#475569' }}>•</span>
                                                         <span style={{
-                                                            backgroundColor: '#dbeafe',
-                                                            color: '#1e40af',
+                                                            backgroundColor: '#334155',
+                                                            color: '#60a5fa',
                                                             padding: '2px 8px',
                                                             borderRadius: '12px',
                                                             fontSize: '11px',
@@ -777,7 +777,7 @@ const BlogManagementPage = () => {
                                                         </span>
                                                     </>
                                                 )}
-                                                <span style={{ color: '#d1d5db' }}>•</span>
+                                                <span style={{ color: '#475569' }}>•</span>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                     <span>👁️</span>
                                                     <span>{post.view_count || 0} views</span>
@@ -949,7 +949,7 @@ const BlogManagementPage = () => {
                             <h4 style={{
                                 fontSize: '20px',
                                 fontWeight: '600',
-                                color: '#111827',
+                                color: '#f1f5f9',
                                 marginBottom: '12px'
                             }}>No blog posts found</h4>
                             <p style={{
@@ -1000,11 +1000,11 @@ const BlogManagementPage = () => {
                     {pagination.pages > 1 && (
                         <div style={{
                             padding: '20px 24px',
-                            borderTop: '1px solid #e5e7eb',
+                            borderTop: '1px solid #475569',
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            backgroundColor: '#f8fafc'
+                            backgroundColor: '#334155'
                         }}>
                             <div style={{
                                 fontSize: '14px',
@@ -1024,9 +1024,9 @@ const BlogManagementPage = () => {
                                         alignItems: 'center',
                                         gap: '6px',
                                         padding: '8px 16px',
-                                        border: '1px solid #d1d5db',
+                                        border: '1px solid #475569',
                                         borderRadius: '8px',
-                                        backgroundColor: 'white',
+                                        backgroundColor: '#1e293b',
                                         color: pagination.current_page === 1 ? '#9ca3af' : '#374151',
                                         fontSize: '14px',
                                         fontWeight: '500',
@@ -1036,7 +1036,7 @@ const BlogManagementPage = () => {
                                     }}
                                     onMouseEnter={(e) => {
                                         if (pagination.current_page !== 1) {
-                                            e.target.style.backgroundColor = '#f9fafb';
+                                            e.target.style.backgroundColor = '#334155';
                                         }
                                     }}
                                     onMouseLeave={(e) => {
@@ -1050,7 +1050,7 @@ const BlogManagementPage = () => {
                                 </button>
                                 <span style={{
                                     padding: '8px 16px',
-                                    backgroundColor: '#dbeafe',
+                                    backgroundColor: '#334155',
                                     color: '#1e40af',
                                     borderRadius: '8px',
                                     fontSize: '14px',
@@ -1067,9 +1067,9 @@ const BlogManagementPage = () => {
                                         alignItems: 'center',
                                         gap: '6px',
                                         padding: '8px 16px',
-                                        border: '1px solid #d1d5db',
+                                        border: '1px solid #475569',
                                         borderRadius: '8px',
-                                        backgroundColor: 'white',
+                                        backgroundColor: '#1e293b',
                                         color: pagination.current_page === pagination.pages ? '#9ca3af' : '#374151',
                                         fontSize: '14px',
                                         fontWeight: '500',
@@ -1079,7 +1079,7 @@ const BlogManagementPage = () => {
                                     }}
                                     onMouseEnter={(e) => {
                                         if (pagination.current_page !== pagination.pages) {
-                                            e.target.style.backgroundColor = '#f9fafb';
+                                            e.target.style.backgroundColor = '#334155';
                                         }
                                     }}
                                     onMouseLeave={(e) => {

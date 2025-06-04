@@ -36,17 +36,17 @@ export const APP_CONFIG = {
     GA_DEBUG_MODE: process.env.NODE_ENV === 'development'
   },
   THEME: {
-    PRIMARY_COLOR: '#2563eb', // Modern blue
-    PRIMARY_DARK: '#1e40af',
-    PRIMARY_LIGHT: '#3b82f6',
-    PRIMARY_LIGHTER: '#dbeafe',
-    ACCENT_COLOR: '#f59e0b', // Amber for highlights
-    ACCENT_LIGHT: '#fbbf24',
-    BACKGROUND_LIGHT: '#f8fafc',
-    BACKGROUND_LIGHTER: '#ffffff',
-    TEXT_PRIMARY: '#111827',
-    TEXT_SECONDARY: '#6b7280',
-    BORDER_COLOR: '#e5e7eb',
+    PRIMARY_COLOR: '#1e293b', // Slate gray
+    PRIMARY_DARK: '#0f172a',
+    PRIMARY_LIGHT: '#334155',
+    PRIMARY_LIGHTER: '#475569',
+    ACCENT_COLOR: '#3b82f6', // Blue accent
+    ACCENT_LIGHT: '#60a5fa',
+    BACKGROUND_LIGHT: '#0f172a',
+    BACKGROUND_LIGHTER: '#1e293b',
+    TEXT_PRIMARY: '#f1f5f9',
+    TEXT_SECONDARY: '#cbd5e1',
+    BORDER_COLOR: '#334155',
     SUCCESS_COLOR: '#10b981',
     ERROR_COLOR: '#ef4444'
   }

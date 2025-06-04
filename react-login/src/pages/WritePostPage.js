@@ -142,7 +142,7 @@ function WritePostPage() {
           paddingTop: '85px',
           padding: '85px 20px 20px 20px',
           minHeight: '100vh',
-          backgroundColor: '#f8fafc',
+          backgroundColor: '#0f172a',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center'
@@ -151,7 +151,7 @@ function WritePostPage() {
             <div style={{
               width: '40px',
               height: '40px',
-              border: '4px solid #e5e7eb',
+              border: '4px solid #475569',
               borderTop: '4px solid #3b82f6',
               borderRadius: '50%',
               animation: 'spin 1s linear infinite',
@@ -189,13 +189,13 @@ function WritePostPage() {
             top: '120px',
             left: '50%',
             transform: 'translateX(-50%)',
-            backgroundColor: 'white',
+            backgroundColor: '#1e293b',
             borderRadius: '16px',
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.15)',
             zIndex: 1000,
             maxWidth: '480px',
             width: '90%',
-            border: '1px solid #e5e7eb',
+            border: '1px solid #475569',
             animation: 'successSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
           }}>
             {/* Header */}
@@ -276,23 +276,23 @@ function WritePostPage() {
             {/* Content */}
             <div style={{ padding: '25px' }}>
               <div style={{
-                backgroundColor: '#f8fafc',
+                backgroundColor: '#0f172a',
                 borderRadius: '12px',
                 padding: '16px',
                 marginBottom: '20px',
-                border: '1px solid #e2e8f0'
+                border: '1px solid #475569'
               }}>
                 <h4 style={{
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: '#1e293b',
+                  color: '#f1f5f9',
                   margin: '0 0 8px 0'
                 }}>
                   "{publishedPost.title}"
                 </h4>
                 <p style={{
                   fontSize: '14px',
-                  color: '#64748b',
+                  color: '#cbd5e1',
                   margin: 0
                 }}>
                   Your article is now visible to all readers and indexed by search engines.
@@ -332,9 +332,9 @@ function WritePostPage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: '12px 20px',
-                    backgroundColor: 'white',
-                    color: '#374151',
-                    border: '1px solid #d1d5db',
+                    backgroundColor: '#1e293b',
+                    color: '#cbd5e1',
+                    border: '1px solid #475569',
                     borderRadius: '8px',
                     fontSize: '14px',
                     fontWeight: '600',
@@ -342,12 +342,12 @@ function WritePostPage() {
                     transition: 'all 0.2s'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = '#f9fafb';
+                    e.target.style.backgroundColor = '#334155';
                     e.target.style.borderColor = '#9ca3af';
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = 'white';
-                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.backgroundColor = '#1e293b';
+                    e.target.style.borderColor = '#475569';
                   }}
                 >
                   <span style={{ marginRight: '8px' }}>📝</span>
@@ -365,13 +365,13 @@ function WritePostPage() {
         paddingTop: '85px',
         padding: '85px 30px 30px 30px',
         minHeight: '100vh',
-        backgroundColor: '#f8fafc'
+        backgroundColor: '#0f172a'
       }}>
         {/* Header Section */}
         <div style={{
           marginBottom: '32px',
           paddingBottom: '24px',
-          borderBottom: '1px solid #e5e7eb'
+          borderBottom: '1px solid #475569'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
             <div style={{
@@ -390,7 +390,7 @@ function WritePostPage() {
               <h1 style={{ 
                 fontSize: '28px', 
                 fontWeight: '700', 
-                color: '#111827',
+                color: '#f1f5f9',
                 margin: '0 0 4px 0'
               }}>
                 Create New Article
@@ -412,21 +412,21 @@ function WritePostPage() {
             gap: '12px',
             marginTop: '16px',
             padding: '12px 16px',
-            backgroundColor: 'white',
+            backgroundColor: '#1e293b',
             borderRadius: '8px',
-            border: '1px solid #e5e7eb'
+            border: '1px solid #475569'
           }}>
             <div style={{
               width: '32px',
               height: '32px',
-              backgroundColor: '#f3f4f6',
+              backgroundColor: '#334155',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '14px',
               fontWeight: '600',
-              color: '#374151'
+              color: '#cbd5e1'
             }}>
               {user.username?.charAt(0).toUpperCase() || 'A'}
             </div>
@@ -434,7 +434,7 @@ function WritePostPage() {
               <p style={{
                 fontSize: '14px',
                 fontWeight: '600',
-                color: '#111827',
+                color: '#f1f5f9',
                 margin: '0 0 2px 0'
               }}>
                 Writing as {user.username || 'Admin'}
@@ -457,10 +457,10 @@ function WritePostPage() {
 
         {/* Editor Container */}
         <div style={{
-          backgroundColor: 'white',
+          backgroundColor: '#1e293b',
           borderRadius: '16px',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-          border: '1px solid #e5e7eb',
+          border: '1px solid #475569',
           overflow: 'hidden'
         }}>
           <BlogEditor 
@@ -473,14 +473,14 @@ function WritePostPage() {
         <div style={{
           marginTop: '32px',
           padding: '20px',
-          backgroundColor: 'white',
+          backgroundColor: '#1e293b',
           borderRadius: '12px',
-          border: '1px solid #e5e7eb'
+          border: '1px solid #475569'
         }}>
           <h3 style={{
             fontSize: '16px',
             fontWeight: '600',
-            color: '#111827',
+            color: '#f1f5f9',
             margin: '0 0 12px 0'
           }}>
             💡 Writing Tips
@@ -493,13 +493,13 @@ function WritePostPage() {
             color: '#6b7280'
           }}>
             <div>
-              <strong style={{ color: '#374151' }}>Engaging Titles:</strong> Use clear, descriptive titles that grab attention
+              <strong style={{ color: '#cbd5e1' }}>Engaging Titles:</strong> Use clear, descriptive titles that grab attention
             </div>
             <div>
-              <strong style={{ color: '#374151' }}>Structure:</strong> Break content into sections with headings and bullet points
+              <strong style={{ color: '#cbd5e1' }}>Structure:</strong> Break content into sections with headings and bullet points
             </div>
             <div>
-              <strong style={{ color: '#374151' }}>SEO:</strong> Add meta descriptions and relevant tags for better discoverability
+              <strong style={{ color: '#cbd5e1' }}>SEO:</strong> Add meta descriptions and relevant tags for better discoverability
             </div>
           </div>
         </div>

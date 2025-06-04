@@ -413,7 +413,7 @@ const BlogPage = () => {
 
                     {/* Main Post Container */}
                     <div style={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#1e293b',
                         borderRadius: '20px',
                         padding: '48px',
                         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
@@ -502,12 +502,12 @@ const BlogPage = () => {
                                         <span style={{ fontSize: '18px' }}>📅</span>
                                         <time>{formatDate(currentPost.published_at || currentPost.created_at)}</time>
                                     </div>
-                                    <span style={{ color: '#d1d5db', fontSize: '18px' }}>•</span>
+                                    <span style={{ color: '#475569', fontSize: '18px' }}>•</span>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         <span style={{ fontSize: '18px' }}>⏱️</span>
                                         <span>{Math.ceil(currentPost.content.split(' ').length / 200)} min read</span>
                                     </div>
-                                    <span style={{ color: '#d1d5db', fontSize: '18px' }}>•</span>
+                                    <span style={{ color: '#475569', fontSize: '18px' }}>•</span>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         <span style={{ fontSize: '18px' }}>👁️</span>
                                         <span>{currentPost.view_count || 0} views</span>
@@ -518,7 +518,7 @@ const BlogPage = () => {
                         
                         {/* Post Content */}
                         <div style={{
-                            color: '#374151',
+                            color: '#cbd5e1',
                             fontSize: '18px',
                             lineHeight: '1.8',
                             fontWeight: '400',
@@ -542,7 +542,7 @@ const BlogPage = () => {
                             <h4 style={{
                                 fontSize: '18px',
                                 fontWeight: '700',
-                                color: '#111827',
+                                color: '#f1f5f9',
                                 marginBottom: '20px',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -593,7 +593,7 @@ const BlogPage = () => {
                                             alignItems: 'center',
                                             gap: '8px',
                                             padding: '12px 20px',
-                                            backgroundColor: 'white',
+                                            backgroundColor: '#1e293b',
                                             border: `2px solid ${platform.color}20`,
                                             borderRadius: '25px',
                                             color: platform.color,
@@ -610,7 +610,7 @@ const BlogPage = () => {
                                             e.target.style.boxShadow = `0 4px 15px ${platform.color}40`;
                                         }}
                                         onMouseLeave={(e) => {
-                                            e.target.style.backgroundColor = 'white';
+                                            e.target.style.backgroundColor = '#1e293b';
                                             e.target.style.color = platform.color;
                                             e.target.style.transform = 'translateY(0)';
                                             e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.05)';
@@ -630,7 +630,7 @@ const BlogPage = () => {
                                 <h4 style={{
                                     fontSize: '18px',
                                     fontWeight: '700',
-                                    color: '#111827',
+                                    color: '#f1f5f9',
                                     marginBottom: '20px',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -645,7 +645,7 @@ const BlogPage = () => {
                                             key={index} 
                                             style={{
                                                 background: APP_CONFIG.THEME.BACKGROUND_LIGHT,
-                                                color: '#374151',
+                                                color: '#cbd5e1',
                                                 padding: '10px 16px',
                                                 borderRadius: '25px',
                                                 fontSize: '14px',
@@ -725,7 +725,7 @@ const BlogPage = () => {
             }}>
                 {/* Filters Section */}
                 <div style={{
-                    backgroundColor: 'white',
+                    backgroundColor: '#1e293b',
                     borderRadius: '12px',
                     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
                     border: '1px solid #e5e7eb',
@@ -741,7 +741,7 @@ const BlogPage = () => {
                         <div style={{
                             width: '24px',
                             height: '24px',
-                            backgroundColor: '#dbeafe',
+                            backgroundColor: '#334155',
                             borderRadius: '6px',
                             display: 'flex',
                             alignItems: 'center',
@@ -753,7 +753,7 @@ const BlogPage = () => {
                         <h3 style={{
                             fontSize: '16px',
                             fontWeight: '600',
-                            color: '#111827',
+                            color: '#f1f5f9',
                             margin: 0
                         }}>
                             Find Articles
@@ -773,11 +773,11 @@ const BlogPage = () => {
                                 style={{
                                     width: '100%',
                                     padding: '10px 14px',
-                                    border: '1px solid #d1d5db',
+                                    border: '1px solid #475569',
                                     borderRadius: '8px',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    color: '#374151',
+                                    backgroundColor: '#1e293b',
+                                    color: '#cbd5e1',
                                     outline: 'none',
                                     transition: 'all 0.2s'
                                 }}
@@ -786,7 +786,7 @@ const BlogPage = () => {
                                     e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                                 }}
                                 onBlur={(e) => {
-                                    e.target.style.borderColor = '#d1d5db';
+                                    e.target.style.borderColor = '#475569';
                                     e.target.style.boxShadow = 'none';
                                 }}
                             />
@@ -798,11 +798,11 @@ const BlogPage = () => {
                                 style={{
                                     minWidth: '180px',
                                     padding: '10px 14px',
-                                    border: '1px solid #d1d5db',
+                                    border: '1px solid #475569',
                                     borderRadius: '8px',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    color: '#374151',
+                                    backgroundColor: '#1e293b',
+                                    color: '#cbd5e1',
                                     outline: 'none',
                                     transition: 'all 0.2s'
                                 }}
@@ -811,7 +811,7 @@ const BlogPage = () => {
                                     e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                                 }}
                                 onBlur={(e) => {
-                                    e.target.style.borderColor = '#d1d5db';
+                                    e.target.style.borderColor = '#475569';
                                     e.target.style.boxShadow = 'none';
                                 }}
                             >
@@ -829,9 +829,9 @@ const BlogPage = () => {
                                     alignItems: 'center',
                                     gap: '6px',
                                     padding: '10px 16px',
-                                    backgroundColor: '#f3f4f6',
-                                    color: '#374151',
-                                    border: '1px solid #d1d5db',
+                                    backgroundColor: '#334155',
+                                    color: '#cbd5e1',
+                                    border: '1px solid #475569',
                                     borderRadius: '8px',
                                     fontSize: '14px',
                                     fontWeight: '500',
@@ -839,11 +839,11 @@ const BlogPage = () => {
                                     transition: 'all 0.2s'
                                 }}
                                 onMouseEnter={(e) => {
-                                    e.target.style.backgroundColor = '#e5e7eb';
+                                    e.target.style.backgroundColor = '#475569';
                                     e.target.style.transform = 'translateY(-1px)';
                                 }}
                                 onMouseLeave={(e) => {
-                                    e.target.style.backgroundColor = '#f3f4f6';
+                                    e.target.style.backgroundColor = '#334155';
                                     e.target.style.transform = 'translateY(0)';
                                 }}
                             >
@@ -906,7 +906,7 @@ const BlogPage = () => {
                                 >
                                     <article 
                                         style={{
-                                            backgroundColor: 'white',
+                                            backgroundColor: '#1e293b',
                                             borderRadius: '16px',
                                             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
                                             border: '1px solid #e5e7eb',
@@ -993,7 +993,7 @@ const BlogPage = () => {
                                                     display: 'inline-flex',
                                                     alignItems: 'center',
                                                     gap: '4px',
-                                                    backgroundColor: '#dbeafe',
+                                                    backgroundColor: '#334155',
                                                     color: '#1e40af',
                                                     fontSize: '12px',
                                                     fontWeight: '500',
@@ -1010,7 +1010,7 @@ const BlogPage = () => {
                                         <h2 style={{
                                             fontSize: '18px',
                                             fontWeight: '700',
-                                            color: '#111827',
+                                            color: '#f1f5f9',
                                             marginBottom: '12px',
                                             lineHeight: '1.4',
                                             display: '-webkit-box',
@@ -1098,8 +1098,8 @@ const BlogPage = () => {
                                         gap: '6px',
                                         padding: '8px 16px',
                                         color: pagination.current_page === 1 ? '#9ca3af' : '#374151',
-                                        backgroundColor: 'white',
-                                        border: '1px solid #d1d5db',
+                                        backgroundColor: '#1e293b',
+                                        border: '1px solid #475569',
                                         borderRadius: '8px',
                                         fontSize: '14px',
                                         fontWeight: '500',
@@ -1109,12 +1109,12 @@ const BlogPage = () => {
                                     }}
                                     onMouseEnter={(e) => {
                                         if (pagination.current_page !== 1) {
-                                            e.target.style.backgroundColor = '#f9fafb';
+                                            e.target.style.backgroundColor = '#334155';
                                         }
                                     }}
                                     onMouseLeave={(e) => {
                                         if (pagination.current_page !== 1) {
-                                            e.target.style.backgroundColor = 'white';
+                                            e.target.style.backgroundColor = '#1e293b';
                                         }
                                     }}
                                 >
@@ -1141,19 +1141,19 @@ const BlogPage = () => {
                                                     boxShadow: '0 2px 8px rgba(59, 130, 246, 0.3)'
                                                 }
                                                 : {
-                                                    color: '#374151',
-                                                    backgroundColor: 'white',
-                                                    border: '1px solid #d1d5db'
+                                                    color: '#cbd5e1',
+                                                    backgroundColor: '#1e293b',
+                                                    border: '1px solid #475569'
                                                 })
                                         }}
                                         onMouseEnter={(e) => {
                                             if (page !== pagination.current_page) {
-                                                e.target.style.backgroundColor = '#f9fafb';
+                                                e.target.style.backgroundColor = '#334155';
                                             }
                                         }}
                                         onMouseLeave={(e) => {
                                             if (page !== pagination.current_page) {
-                                                e.target.style.backgroundColor = 'white';
+                                                e.target.style.backgroundColor = '#1e293b';
                                             }
                                         }}
                                     >
@@ -1170,8 +1170,8 @@ const BlogPage = () => {
                                         gap: '6px',
                                         padding: '8px 16px',
                                         color: pagination.current_page === pagination.pages ? '#9ca3af' : '#374151',
-                                        backgroundColor: 'white',
-                                        border: '1px solid #d1d5db',
+                                        backgroundColor: '#1e293b',
+                                        border: '1px solid #475569',
                                         borderRadius: '8px',
                                         fontSize: '14px',
                                         fontWeight: '500',
@@ -1181,12 +1181,12 @@ const BlogPage = () => {
                                     }}
                                     onMouseEnter={(e) => {
                                         if (pagination.current_page !== pagination.pages) {
-                                            e.target.style.backgroundColor = '#f9fafb';
+                                            e.target.style.backgroundColor = '#334155';
                                         }
                                     }}
                                     onMouseLeave={(e) => {
                                         if (pagination.current_page !== pagination.pages) {
-                                            e.target.style.backgroundColor = 'white';
+                                            e.target.style.backgroundColor = '#1e293b';
                                         }
                                     }}
                                 >
@@ -1200,7 +1200,7 @@ const BlogPage = () => {
                     <div style={{
                         textAlign: 'center',
                         padding: '80px 20px',
-                        backgroundColor: 'white',
+                        backgroundColor: '#1e293b',
                         borderRadius: '16px',
                         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
                         border: '1px solid #e5e7eb'
@@ -1214,7 +1214,7 @@ const BlogPage = () => {
                         <h3 style={{
                             fontSize: '24px',
                             fontWeight: '700',
-                            color: '#111827',
+                            color: '#f1f5f9',
                             marginBottom: '12px'
                         }}>No articles found</h3>
                         <p style={{

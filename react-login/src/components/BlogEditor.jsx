@@ -171,8 +171,8 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
         position: 'sticky',
         top: '0px',
         zIndex: 40,
-        backgroundColor: 'white',
-        borderBottom: '1px solid #e5e7eb',
+        backgroundColor: '#1e293b',
+        borderBottom: '1px solid #475569',
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
         borderRadius: '12px 12px 0 0',
         marginBottom: '0'
@@ -190,26 +190,26 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                   fontSize: '14px',
                   fontWeight: '500',
                   color: '#374151',
-                  backgroundColor: 'white',
-                  border: '1px solid #d1d5db',
+                  backgroundColor: '#1e293b',
+                  border: '1px solid #475569',
                   borderRadius: '8px',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                   textDecoration: 'none'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#f9fafb';
+                  e.target.style.backgroundColor = '#334155';
                   e.target.style.borderColor = '#9ca3af';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'white';
-                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.backgroundColor = '#1e293b';
+                  e.target.style.borderColor = '#475569';
                 }}
               >
                 <span style={{ marginRight: '8px' }}>⬅️</span>
                 Back
               </button>
-              <div style={{ height: '24px', width: '1px', backgroundColor: '#d1d5db' }}></div>
+              <div style={{ height: '24px', width: '1px', backgroundColor: '#475569' }}></div>
               <h1 style={{ fontSize: '18px', fontWeight: '600', color: '#111827' }}>
                 {post ? 'Edit Post' : 'New Post'}
               </h1>
@@ -247,22 +247,22 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                   fontSize: '14px',
                   fontWeight: '500',
                   color: showPreview ? '#1e40af' : '#374151',
-                  backgroundColor: showPreview ? '#dbeafe' : 'white',
-                  border: showPreview ? '1px solid #93c5fd' : '1px solid #d1d5db',
+                  backgroundColor: showPreview ? '#334155' : '#1e293b',
+                  border: showPreview ? '1px solid #64748b' : '1px solid #475569',
                   borderRadius: '8px',
                   cursor: 'pointer',
                   transition: 'all 0.2s'
                 }}
                 onMouseEnter={(e) => {
                   if (!showPreview) {
-                    e.target.style.backgroundColor = '#f9fafb';
+                    e.target.style.backgroundColor = '#334155';
                     e.target.style.borderColor = '#9ca3af';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!showPreview) {
-                    e.target.style.backgroundColor = 'white';
-                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.backgroundColor = '#1e293b';
+                    e.target.style.borderColor = '#475569';
                   }
                 }}
               >
@@ -280,8 +280,8 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                   fontSize: '14px',
                   fontWeight: '500',
                   color: '#374151',
-                  backgroundColor: 'white',
-                  border: '1px solid #d1d5db',
+                  backgroundColor: '#1e293b',
+                  border: '1px solid #475569',
                   borderRadius: '8px',
                   cursor: isSubmitting ? 'not-allowed' : 'pointer',
                   transition: 'all 0.2s',
@@ -289,14 +289,14 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                 }}
                 onMouseEnter={(e) => {
                   if (!isSubmitting) {
-                    e.target.style.backgroundColor = '#f9fafb';
+                    e.target.style.backgroundColor = '#334155';
                     e.target.style.borderColor = '#9ca3af';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isSubmitting) {
-                    e.target.style.backgroundColor = 'white';
-                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.backgroundColor = '#1e293b';
+                    e.target.style.borderColor = '#475569';
                   }
                 }}
               >
@@ -389,7 +389,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
       <div style={{ 
         maxWidth: '1280px', 
         margin: '0 auto',
-        backgroundColor: 'white',
+        backgroundColor: '#1e293b',
         borderRadius: '0 0 12px 12px',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
         border: '1px solid #e5e7eb',
@@ -426,7 +426,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                   }}
                   placeholder="Post title..."
                   onFocus={(e) => {
-                    e.target.style.backgroundColor = '#f8fafc';
+                    e.target.style.backgroundColor = '#334155';
                     e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                   }}
                   onBlur={(e) => {
@@ -507,7 +507,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                   }}
                   placeholder="Start writing your story..."
                   onFocus={(e) => {
-                    e.target.style.backgroundColor = '#f8fafc';
+                    e.target.style.backgroundColor = '#334155';
                     e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                   }}
                   onBlur={(e) => {
@@ -541,7 +541,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
             <div style={{ 
               flex: 1, 
               borderLeft: '1px solid #e5e7eb', 
-              backgroundColor: 'white',
+              backgroundColor: '#1e293b',
               height: 'calc(100vh - 85px)',
               overflowY: 'auto'
             }}>
@@ -555,7 +555,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
           {/* Right Sidebar */}
           <div style={{ 
             width: '320px', 
-            backgroundColor: 'white', 
+            backgroundColor: '#1e293b', 
             borderLeft: '1px solid #e5e7eb',
             flexShrink: 0,
             height: 'calc(100vh - 85px)',
@@ -580,10 +580,10 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                         style={{
                           width: '100%',
                           padding: '8px 12px',
-                          border: '1px solid #d1d5db',
+                          border: '1px solid #475569',
                           borderRadius: '8px',
                           fontSize: '14px',
-                          backgroundColor: 'white',
+                          backgroundColor: '#1e293b',
                           color: '#374151',
                           outline: 'none',
                           transition: 'all 0.2s'
@@ -593,7 +593,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                           e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                         }}
                         onBlur={(e) => {
-                          e.target.style.borderColor = '#d1d5db';
+                          e.target.style.borderColor = '#475569';
                           e.target.style.boxShadow = 'none';
                         }}
                       >
@@ -614,10 +614,10 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                         style={{
                           width: '100%',
                           padding: '8px 12px',
-                          border: '1px solid #d1d5db',
+                          border: '1px solid #475569',
                           borderRadius: '8px',
                           fontSize: '14px',
-                          backgroundColor: 'white',
+                          backgroundColor: '#1e293b',
                           color: '#374151',
                           outline: 'none',
                           transition: 'all 0.2s'
@@ -627,7 +627,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                           e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                         }}
                         onBlur={(e) => {
-                          e.target.style.borderColor = '#d1d5db';
+                          e.target.style.borderColor = '#475569';
                           e.target.style.boxShadow = 'none';
                         }}
                       >
@@ -652,10 +652,10 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                         style={{
                           width: '100%',
                           padding: '8px 12px',
-                          border: '1px solid #d1d5db',
+                          border: '1px solid #475569',
                           borderRadius: '8px',
                           fontSize: '14px',
-                          backgroundColor: 'white',
+                          backgroundColor: '#1e293b',
                           color: '#374151',
                           outline: 'none',
                           transition: 'all 0.2s'
@@ -666,7 +666,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                           e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                         }}
                         onBlur={(e) => {
-                          e.target.style.borderColor = '#d1d5db';
+                          e.target.style.borderColor = '#475569';
                           e.target.style.boxShadow = 'none';
                         }}
                       />
@@ -689,10 +689,10 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                       style={{
                         width: '100%',
                         padding: '8px 12px',
-                        border: '1px solid #d1d5db',
+                        border: '1px solid #475569',
                         borderRadius: '8px',
                         fontSize: '14px',
-                        backgroundColor: 'white',
+                        backgroundColor: '#1e293b',
                         color: '#374151',
                         outline: 'none',
                         transition: 'all 0.2s'
@@ -703,7 +703,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                         e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                       }}
                       onBlur={(e) => {
-                        e.target.style.borderColor = '#d1d5db';
+                        e.target.style.borderColor = '#475569';
                         e.target.style.boxShadow = 'none';
                       }}
                     />
@@ -766,10 +766,10 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                     style={{
                       width: '100%',
                       padding: '8px 12px',
-                      border: '1px solid #d1d5db',
+                      border: '1px solid #475569',
                       borderRadius: '8px',
                       fontSize: '14px',
-                      backgroundColor: 'white',
+                      backgroundColor: '#1e293b',
                       color: '#374151',
                       outline: 'none',
                       resize: 'vertical',
@@ -782,7 +782,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                       e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.borderColor = '#475569';
                       e.target.style.boxShadow = 'none';
                     }}
                   />
@@ -804,7 +804,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                       letterSpacing: '0.05em',
                       marginBottom: '16px',
                       padding: '8px 12px',
-                      backgroundColor: '#f9fafb',
+                      backgroundColor: '#334155',
                       border: '1px solid #e5e7eb',
                       borderRadius: '8px',
                       cursor: 'pointer',
@@ -815,7 +815,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                       e.target.style.color = '#3b82f6';
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.backgroundColor = '#f9fafb';
+                      e.target.style.backgroundColor = '#334155';
                       e.target.style.color = '#111827';
                     }}
                   >
@@ -843,10 +843,10 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                           style={{
                             width: '100%',
                             padding: '8px 12px',
-                            border: '1px solid #d1d5db',
+                            border: '1px solid #475569',
                             borderRadius: '8px',
                             fontSize: '14px',
-                            backgroundColor: 'white',
+                            backgroundColor: '#1e293b',
                             color: '#374151',
                             outline: 'none',
                             resize: 'vertical',
@@ -859,7 +859,7 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                             e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.1)';
                           }}
                           onBlur={(e) => {
-                            e.target.style.borderColor = '#d1d5db';
+                            e.target.style.borderColor = '#475569';
                             e.target.style.boxShadow = 'none';
                           }}
                         />

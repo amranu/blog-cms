@@ -4,12 +4,55 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8fafc;
+  background: #0f172a;
+  color: #f1f5f9;
+  line-height: 1.6;
+}
+
+/* Dark theme overrides for Tailwind classes */
+.bg-white {
+  background-color: #1e293b !important;
+}
+
+.bg-gray-50, .bg-gray-100 {
+  background-color: #334155 !important;
+}
+
+.bg-gray-200 {
+  background-color: #475569 !important;
+}
+
+/* Text color overrides */
+.text-gray-900, .text-gray-800, .text-gray-700 {
+  color: #f1f5f9 !important;
+}
+
+.text-gray-600, .text-gray-500 {
+  color: #cbd5e1 !important;
+}
+
+.text-gray-400 {
+  color: #94a3b8 !important;
+}
+
+/* Form element overrides */
+input, textarea, select {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Border overrides */
+.border-gray-300, .border-gray-200 {
+  border-color: #334155 !important;
 }
 
 code {
@@ -32,14 +75,14 @@ code {
   overflow: hidden;
 }
 
-/* Prose styling for blog content */
+/* Dark theme prose styling for blog content */
 .prose {
-  color: #374151;
+  color: #f1f5f9;
   max-width: 65ch;
 }
 
 .prose h1 {
-  color: #111827;
+  color: #f1f5f9;
   font-weight: 800;
   font-size: 2.25em;
   margin-top: 0;
@@ -48,7 +91,7 @@ code {
 }
 
 .prose h2 {
-  color: #111827;
+  color: #cbd5e1;
   font-weight: 700;
   font-size: 1.5em;
   margin-top: 2em;
@@ -57,7 +100,7 @@ code {
 }
 
 .prose h3 {
-  color: #111827;
+  color: #94a3b8;
   font-weight: 600;
   font-size: 1.25em;
   margin-top: 1.6em;
@@ -71,17 +114,18 @@ code {
 }
 
 .prose a {
-  color: #2563eb;
+  color: #3b82f6;
   text-decoration: underline;
   font-weight: 500;
+  transition: all 0.2s;
 }
 
 .prose a:hover {
-  color: #1d4ed8;
+  color: #60a5fa;
 }
 
 .prose strong {
-  color: #111827;
+  color: #f1f5f9;
   font-weight: 600;
 }
 
@@ -135,22 +179,22 @@ button, a, .interactive {
   transition: all 0.2s ease-in-out;
 }
 
-/* Custom scrollbar */
+/* Professional dark scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0f172a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: #334155;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: #475569;
 }
 
 /* Responsive design for smaller screens */

@@ -3,19 +3,20 @@
   top: 0;
   width: calc(100% - 200px);
   padding: 10px;
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  color: #333;
+  color: #f1f5f9;
   margin-left: 200px;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
 }
 
 .header:hover {
-  background-color: #f8f9fa;
+  background: #334155;
 }
 
 .logout-button {
@@ -23,13 +24,22 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  padding: 5px 10px;
-  color: blue;
+  padding: 6px 12px;
+  color: #f1f5f9;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.5s ease;
+  transition: all 0.2s ease;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  background: #334155;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .logout-button:hover {
-  color: red;
+  color: #ffffff;
+  background: #ef4444;
+  border-color: #ef4444;
+  transform: translateY(-50%) translateY(-1px);
 }

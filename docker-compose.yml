@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  flask-api:
+    build:
+      context: ./flask-api
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=sqlite:////app/instance/cms_blog.db
+    volumes:
+      - flask-data:/app/instance
+    restart: unless-stopped
+    networks:
+      - blog-cms-network
+
+  react-app:
+    build:
+      context: ./react-login
+    ports:
+      - "3000:3000"
+    depends_on:
+      - flask-api
+    restart: unless-stopped
+    networks:
+      - blog-cms-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/blog-cms:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/html:/var/www/html
+    depends_on:
+      - react-app
+      - flask-api
+    restart: unless-stopped
+    networks:
+      - blog-cms-network
+
+networks:
+  blog-cms-network:
+    driver: bridge
+
+volumes:
+  flask-data:
+    driver: local

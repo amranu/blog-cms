@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useAnalytics } from './hooks/useAnalytics';
-import { SiteProvider } from './contexts/SiteContext';
+import { SiteProvider, useSiteContext } from './contexts/SiteContext';
 import './theme.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -16,6 +16,7 @@ function App() {
   return (
     <Router>
       <SiteProvider>
+        <DocumentTitleUpdater />
         <AnalyticsProvider>
           <Routes>
             <Route path='/' element={<BlogPage />} />
@@ -33,6 +34,17 @@ function App() {
       </SiteProvider>
     </Router>
   );
+}
+
+// Document title updater component
+function DocumentTitleUpdater() {
+  const { siteName } = useSiteContext();
+  
+  useEffect(() => {
+    document.title = siteName;
+  }, [siteName]);
+  
+  return null;
 }
 
 // Analytics provider component to initialize tracking

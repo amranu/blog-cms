@@ -5,7 +5,10 @@ export const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://isodigm.ca
 export const API_ENDPOINTS = {
   // Authentication
   LOGIN: `https://isodigm.ca/api/login`,
-  REGISTER: `https://isodigm.ca/api/register_user`,
+  REGISTER: `https://isodigm.ca/api/register`,
+  REGISTER_ADMIN: `https://isodigm.ca/api/register_user`,
+  VERIFY_EMAIL: `https://isodigm.ca/api/verify-email`,
+  RESEND_VERIFICATION: `https://isodigm.ca/api/resend-verification`,
   
   // Blog Posts
   BLOG_POSTS: `${API_BASE_URL}/blog/posts`,
@@ -14,6 +17,10 @@ export const API_ENDPOINTS = {
   
   // Categories
   BLOG_CATEGORIES: `${API_BASE_URL}/blog/categories`,
+  
+  // Image uploads
+  UPLOAD_IMAGE: `https://isodigm.ca/api/uploads/upload-image`,
+  IMAGE_URL: (filename) => `https://isodigm.ca/api/uploads/images/${filename}`,
 };
 
 export const APP_CONFIG = {

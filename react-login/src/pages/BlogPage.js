@@ -14,6 +14,7 @@ const BlogPage = () => {
     const { siteName } = useSiteContext();
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [postNotFound, setPostNotFound] = useState(false);
     const [filters, setFilters] = useState({
         category: '',
         search: ''
@@ -73,18 +74,22 @@ const BlogPage = () => {
     const fetchSinglePost = async (slug) => {
         try {
             setLoading(true);
+            setPostNotFound(false);
             const response = await fetch(API_ENDPOINTS.BLOG_POST_BY_SLUG(slug));
             
             if (response.ok) {
                 const post = await response.json();
                 setCurrentPost(post);
+                setPostNotFound(false);
             } else {
                 console.error('Failed to fetch post');
                 setCurrentPost(null);
+                setPostNotFound(true);
             }
         } catch (error) {
             console.error('Error fetching post:', error);
             setCurrentPost(null);
+            setPostNotFound(true);
         } finally {
             setLoading(false);
         }
@@ -259,6 +264,67 @@ const BlogPage = () => {
             </nav>
         );
     };
+
+    // Post Not Found View
+    if (slug && postNotFound && !loading) {
+        return (
+            <div className="blog-container">
+                <Navigation />
+                
+                <div style={{ 
+                    maxWidth: '720px', 
+                    margin: '0 auto', 
+                    padding: '40px 24px',
+                    textAlign: 'center'
+                }}>
+                    {/* Back to Blog Button */}
+                    <div style={{ marginBottom: '40px' }}>
+                        <Link 
+                            to="/" 
+                            className="blog-nav-link"
+                            style={{
+                                fontSize: '14px',
+                                fontWeight: '500'
+                            }}
+                        >
+                            ← Back to all posts
+                        </Link>
+                    </div>
+
+                    <div style={{ padding: '80px 20px' }}>
+                        <h1 className="blog-post-title" style={{
+                            fontSize: '2.5rem',
+                            fontWeight: '700',
+                            marginBottom: '16px'
+                        }}>
+                            Post Not Found
+                        </h1>
+                        <p className="blog-post-meta" style={{
+                            fontSize: '16px',
+                            lineHeight: '1.5',
+                            marginBottom: '32px'
+                        }}>
+                            The blog post you're looking for doesn't exist or has been removed.
+                        </p>
+                        <Link
+                            to="/"
+                            className="blog-button"
+                            style={{
+                                display: 'inline-block',
+                                padding: '12px 24px',
+                                borderRadius: '6px',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                textDecoration: 'none'
+                            }}
+                        >
+                            View All Posts
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     // Single Post View
     if (slug && currentPost) {

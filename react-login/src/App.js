@@ -3,7 +3,9 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useAnalytics } from './hooks/useAnalytics';
 import { SiteProvider, useSiteContext } from './contexts/SiteContext';
+import { BlogThemeProvider } from './contexts/BlogThemeContext';
 import './theme.css';
+import './styles/blog-theme.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import WritePostPage from './pages/WritePostPage';
@@ -20,9 +22,9 @@ function App() {
         <DocumentTitleUpdater />
         <AnalyticsProvider>
           <Routes>
-            <Route path='/' element={<BlogPage />} />
-            <Route path='/blog' element={<BlogPage />} />
-            <Route path='/blog/:slug' element={<BlogPage />} />
+            <Route path='/' element={<BlogThemeProvider><BlogPage /></BlogThemeProvider>} />
+            <Route path='/blog' element={<BlogThemeProvider><BlogPage /></BlogThemeProvider>} />
+            <Route path='/blog/:slug' element={<BlogThemeProvider><BlogPage /></BlogThemeProvider>} />
             <Route path='/home' element={<Navigate to="/admin" replace />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />

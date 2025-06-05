@@ -1,0 +1,18 @@
+[Unit]
+Description=Flask API for Blog CMS
+After=network.target
+
+[Service]
+Type=exec
+User={{ app_user }}
+Group={{ app_group }}
+WorkingDirectory={{ deploy_dir }}/flask-api
+Environment=PATH={{ deploy_dir }}/flask-api/venv/bin
+Environment=FLASK_ENV=production
+Environment=DATABASE_URL=sqlite:///{{ deploy_dir }}/flask-api/instance/cms_blog.db
+ExecStart={{ deploy_dir }}/flask-api/venv/bin/gunicorn --bind 127.0.0.1:{{ flask_port }} --workers 3 api:app
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

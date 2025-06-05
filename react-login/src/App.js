@@ -11,6 +11,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import BlogManagementPage from './pages/BlogManagementPage';
 import BlogPage from './pages/BlogPage';
 import SettingsPage from './pages/SettingsPage';
+import CategoryManagementPage from './pages/CategoryManagementPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/write-post' element={<WritePostPage />} />
             <Route path='/blog-management' element={<BlogManagementPage />} />
+            <Route path='/category-management' element={<CategoryManagementPage />} />
             <Route path='/admin' element={<AdminDashboard />} />
             <Route path='/settings' element={<SettingsPage />} />
           </Routes>

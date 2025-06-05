@@ -4,8 +4,8 @@ services:
   flask-api:
     build:
       context: ./flask-api
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     environment:
       - FLASK_ENV=production
       - DATABASE_URL=sqlite:////app/instance/cms_blog.db
@@ -18,8 +18,8 @@ services:
   react-app:
     build:
       context: ./react-login
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       - flask-api
     restart: unless-stopped

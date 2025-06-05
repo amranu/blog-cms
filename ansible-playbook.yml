@@ -1,0 +1,257 @@
+---
+- name: Deploy Blog CMS Application
+  hosts: all
+  become: yes
+  vars:
+    deploy_dir: /opt/blog-cms-deploy
+    app_user: blogcms
+    app_group: blogcms
+    domain_name: "{{ ansible_default_ipv4.address | default('localhost') }}"
+    flask_port: 5000
+    react_port: 3000
+    nginx_port: 80
+    python_version: "3.11"
+
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install system dependencies
+      apt:
+        name:
+          - git
+          - python3
+          - python3-pip
+          - python3-venv
+          - nodejs
+          - npm
+          - nginx
+          - docker.io
+          - docker-compose
+          - sqlite3
+          - curl
+          - wget
+          - certbot
+          - python3-certbot-nginx
+        state: present
+
+    - name: Stop existing services if they exist
+      systemd:
+        name: "{{ item }}"
+        state: stopped
+      ignore_errors: yes
+      loop:
+        - flask-api
+        - react-app
+
+    - name: Create application group
+      group:
+        name: "{{ app_group }}"
+        system: yes
+
+    - name: Create application user
+      user:
+        name: "{{ app_user }}"
+        group: "{{ app_group }}"
+        system: yes
+        shell: /bin/bash
+        home: "{{ deploy_dir }}"
+        create_home: yes
+
+    - name: Create deployment directory
+      file:
+        path: "{{ deploy_dir }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: '0755'
+
+    - name: Copy blog-cms source code from local directory
+      synchronize:
+        src: /opt/blog-cms/
+        dest: "{{ deploy_dir }}"
+        delete: yes
+        recursive: yes
+        rsync_opts:
+          - "--exclude=ansible-playbook.yml"
+          - "--exclude=inventory.ini"
+          - "--exclude=ansible.cfg"
+          - "--exclude=README-ansible.md"
+          - "--exclude=templates/"
+      delegate_to: localhost
+
+    - name: Fix ownership of copied files
+      file:
+        path: "{{ deploy_dir }}"
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        recurse: yes
+
+    - name: Install global npm packages
+      npm:
+        name: "{{ item }}"
+        global: yes
+      loop:
+        - serve
+
+    - name: Remove existing virtual environment if it exists
+      file:
+        path: "{{ deploy_dir }}/flask-api/venv"
+        state: absent
+
+    - name: Create Python virtual environment
+      command: python3 -m venv "{{ deploy_dir }}/flask-api/venv"
+      become_user: "{{ app_user }}"
+      args:
+        creates: "{{ deploy_dir }}/flask-api/venv"
+
+    - name: Fix virtual environment permissions
+      file:
+        path: "{{ deploy_dir }}/flask-api/venv"
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        recurse: yes
+
+    - name: Install Python dependencies
+      pip:
+        requirements: "{{ deploy_dir }}/flask-api/requirements.txt"
+        virtualenv: "{{ deploy_dir }}/flask-api/venv"
+      become_user: "{{ app_user }}"
+
+    - name: Install gunicorn
+      pip:
+        name: gunicorn
+        virtualenv: "{{ deploy_dir }}/flask-api/venv"
+      become_user: "{{ app_user }}"
+
+    - name: Install Node.js dependencies
+      npm:
+        path: "{{ deploy_dir }}/react-login"
+      become_user: "{{ app_user }}"
+
+    - name: Copy existing React build if available
+      copy:
+        src: /opt/blog-cms/react-login/build/
+        dest: "{{ deploy_dir }}/react-login/build/"
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: preserve
+        remote_src: yes
+      ignore_errors: yes
+
+    - name: Build React application (if build doesn't exist)
+      command: npm run build
+      args:
+        chdir: "{{ deploy_dir }}/react-login"
+        creates: "{{ deploy_dir }}/react-login/build/index.html"
+      become_user: "{{ app_user }}"
+      environment:
+        NODE_OPTIONS: '--openssl-legacy-provider'
+      ignore_errors: yes
+
+    - name: Create Flask database instance directory
+      file:
+        path: "{{ deploy_dir }}/flask-api/instance"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: '0755'
+
+    - name: Initialize Flask database
+      command: python3 -c "from api import app, db; app.app_context().push(); db.create_all()"
+      args:
+        chdir: "{{ deploy_dir }}/flask-api"
+      become_user: "{{ app_user }}"
+      environment:
+        PATH: "{{ deploy_dir }}/flask-api/venv/bin:{{ ansible_env.PATH }}"
+
+    - name: Create systemd service for Flask API
+      template:
+        src: flask-api.service.j2
+        dest: /etc/systemd/system/flask-api.service
+        mode: '0644'
+      notify: restart flask-api
+
+    - name: Create systemd service for React app
+      template:
+        src: react-app.service.j2
+        dest: /etc/systemd/system/react-app.service
+        mode: '0644'
+      notify: restart react-app
+
+    - name: Create nginx configuration
+      template:
+        src: nginx-blog-cms.conf.j2
+        dest: /etc/nginx/sites-available/blog-cms
+        mode: '0644'
+      notify: restart nginx
+
+    - name: Enable nginx site
+      file:
+        src: /etc/nginx/sites-available/blog-cms
+        dest: /etc/nginx/sites-enabled/blog-cms
+        state: link
+      notify: restart nginx
+
+    - name: Remove default nginx site
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      notify: restart nginx
+
+    - name: Create nginx log directory
+      file:
+        path: /var/log/nginx/blog-cms
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Start and enable services
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+        daemon_reload: yes
+      loop:
+        - flask-api
+        - react-app
+        - nginx
+
+    - name: Create admin user script
+      template:
+        src: create_admin.py.j2
+        dest: "{{ deploy_dir }}/create_admin.py"
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: '0755'
+
+    - name: Display deployment information
+      debug:
+        msg:
+          - "Blog CMS deployed successfully!"
+          - "Application directory: {{ deploy_dir }}"
+          - "Access URL: http://{{ domain_name }}"
+          - "To create admin user, run: cd {{ deploy_dir }} && python3 create_admin.py"
+          - "Services: flask-api, react-app, nginx"
+          - "Logs: journalctl -u flask-api -f"
+
+  handlers:
+    - name: restart flask-api
+      systemd:
+        name: flask-api
+        state: restarted
+        daemon_reload: yes
+
+    - name: restart react-app
+      systemd:
+        name: react-app
+        state: restarted
+        daemon_reload: yes
+
+    - name: restart nginx
+      systemd:
+        name: nginx
+        state: restarted

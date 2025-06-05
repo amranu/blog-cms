@@ -344,31 +344,29 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
           </div>
         </div>
         
-        {!isReply && (
-          <button
-            onClick={() => handleReply(comment.id)}
-            style={{
-              padding: '4px 8px',
-              fontSize: '12px',
-              color: 'var(--blog-accent-primary)',
-              backgroundColor: 'transparent',
-              border: '1px solid var(--blog-accent-primary)',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'var(--blog-accent-primary)';
-              e.target.style.color = 'white';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'transparent';
-              e.target.style.color = 'var(--blog-accent-primary)';
-            }}
-          >
-            Reply
-          </button>
-        )}
+        <button
+          onClick={() => handleReply(comment.id)}
+          style={{
+            padding: '4px 8px',
+            fontSize: '12px',
+            color: 'var(--blog-accent-primary)',
+            backgroundColor: 'transparent',
+            border: '1px solid var(--blog-accent-primary)',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = 'var(--blog-accent-primary)';
+            e.target.style.color = 'white';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'transparent';
+            e.target.style.color = 'var(--blog-accent-primary)';
+          }}
+        >
+          Reply
+        </button>
       </div>
       
       <div style={{ color: 'var(--blog-text-primary)', lineHeight: '1.6' }}>

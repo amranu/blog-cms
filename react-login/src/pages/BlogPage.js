@@ -31,6 +31,14 @@ const BlogPage = () => {
     const analytics = useAnalytics();
     const blogPostAnalytics = useBlogPostAnalytics(currentPost);
 
+    // Add blog-page class to body for CSS targeting
+    useEffect(() => {
+        document.body.classList.add('blog-page');
+        return () => {
+            document.body.classList.remove('blog-page');
+        };
+    }, []);
+
     useEffect(() => {
         if (slug) {
             fetchSinglePost(slug);

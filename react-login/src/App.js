@@ -8,6 +8,7 @@ import './theme.css';
 import './styles/blog-theme.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
 import WritePostPage from './pages/WritePostPage';
 import AdminDashboard from './pages/AdminDashboard';
 import BlogManagementPage from './pages/BlogManagementPage';
@@ -28,6 +29,7 @@ function App() {
             <Route path='/home' element={<Navigate to="/admin" replace />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
+            <Route path='/verify-email' element={<VerifyEmailPage />} />
             <Route path='/write-post' element={<WritePostPage />} />
             <Route path='/blog-management' element={<BlogManagementPage />} />
             <Route path='/category-management' element={<CategoryManagementPage />} />

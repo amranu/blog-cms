@@ -423,14 +423,14 @@ const BlogPage = () => {
     return (
         <div style={{ minHeight: '100vh', background: '#ffffff' }}>
             <style>{`
-                .light-input, .light-select {
+                .blog-light-input, .blog-light-select {
                     background-color: #ffffff !important;
                     color: #374151 !important;
-                    border: 1px solid #e5e7eb !important;
+                    border: 1px solid #d1d5db !important;
                 }
-                .light-input:focus, .light-select:focus {
+                .blog-light-input:focus, .blog-light-select:focus {
                     border-color: #3b82f6 !important;
-                    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+                    box-shadow: none !important;
                 }
             `}</style>
             <Navigation />
@@ -480,32 +480,33 @@ const BlogPage = () => {
                                 placeholder="Search posts..."
                                 value={filters.search}
                                 onChange={(e) => handleSearchInput(e.target.value)}
-                                className="light-input"
+                                className="blog-light-input"
                                 style={{
                                     flex: 1,
                                     minWidth: '200px',
-                                    padding: '12px 16px',
-                                    borderRadius: '8px',
+                                    padding: '8px 12px',
+                                    borderRadius: '6px',
                                     fontSize: '14px',
                                     outline: 'none',
-                                    transition: 'all 0.2s ease',
-                                    fontFamily: 'inherit'
+                                    transition: 'border-color 0.2s'
                                 }}
+                                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                             />
                             {categories.length > 0 && (
                                 <select
                                     value={filters.category}
                                     onChange={(e) => handleCategoryFilter(e.target.value)}
-                                    className="light-select"
+                                    className="blog-light-select"
                                     style={{
-                                        padding: '12px 16px',
-                                        borderRadius: '8px',
+                                        padding: '8px 12px',
+                                        borderRadius: '6px',
                                         fontSize: '14px',
                                         outline: 'none',
-                                        transition: 'all 0.2s ease',
-                                        fontFamily: 'inherit',
-                                        minWidth: '160px'
+                                        transition: 'border-color 0.2s'
                                     }}
+                                    onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                    onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                                 >
                                     <option value="">All categories</option>
                                     {categories.map(category => (
@@ -519,30 +520,23 @@ const BlogPage = () => {
                                 <button
                                     onClick={handleClearFilters}
                                     style={{
-                                        padding: '12px 16px',
+                                        padding: '8px 16px',
                                         backgroundColor: '#ffffff',
                                         color: '#6b7280',
-                                        border: '1px solid #e5e7eb',
-                                        borderRadius: '8px',
+                                        border: '1px solid #d1d5db',
+                                        borderRadius: '6px',
                                         fontSize: '14px',
                                         fontWeight: '500',
                                         cursor: 'pointer',
-                                        transition: 'all 0.2s ease',
-                                        fontFamily: 'inherit'
+                                        transition: 'all 0.2s'
                                     }}
                                     onMouseEnter={(e) => {
-                                        e.target.style.backgroundColor = '#f9fafb';
-                                        e.target.style.borderColor = '#3b82f6';
+                                        e.target.style.backgroundColor = '#f3f4f6';
                                         e.target.style.color = '#374151';
-                                        e.target.style.transform = 'translateY(-1px)';
-                                        e.target.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
                                     }}
                                     onMouseLeave={(e) => {
                                         e.target.style.backgroundColor = '#ffffff';
-                                        e.target.style.borderColor = '#e5e7eb';
                                         e.target.style.color = '#6b7280';
-                                        e.target.style.transform = 'translateY(0)';
-                                        e.target.style.boxShadow = 'none';
                                     }}
                                 >
                                     Clear

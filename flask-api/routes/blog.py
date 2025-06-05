@@ -267,3 +267,59 @@ def create_blog_category(user):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
+
+@blog_bp.route('/categories/<int:category_id>', methods=['PUT'])
+@admin_required
+def update_blog_category(user, category_id):
+    """Update an existing blog category"""
+    try:
+        data = request.json
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+            
+        category = BlogCategory.query.get_or_404(category_id)
+        
+        # Update fields
+        if 'name' in data:
+            category.name = data['name']
+            # Regenerate slug if name changed
+            slug = re.sub(r'[^a-zA-Z0-9\s-]', '', data['name'].lower())
+            slug = re.sub(r'\s+', '-', slug.strip())
+            
+            # Ensure slug is unique (excluding current category)
+            base_slug = slug
+            counter = 1
+            while BlogCategory.query.filter(BlogCategory.slug == slug, BlogCategory.id != category_id).first():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            category.slug = slug
+        
+        if 'description' in data:
+            category.description = data['description']
+        if 'color' in data:
+            category.color = data['color']
+        if 'meta_description' in data:
+            category.meta_description = data['meta_description']
+        
+        db.session.commit()
+        
+        return jsonify(category.to_dict())
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
+@blog_bp.route('/categories/<int:category_id>', methods=['DELETE'])
+@admin_required
+def delete_blog_category(user, category_id):
+    """Delete a blog category"""
+    try:
+        category = BlogCategory.query.get_or_404(category_id)
+        db.session.delete(category)
+        db.session.commit()
+        
+        return jsonify({'message': 'Category deleted successfully'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400

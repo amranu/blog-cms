@@ -11,23 +11,13 @@ import AdminDashboard from './pages/AdminDashboard';
 import BlogManagementPage from './pages/BlogManagementPage';
 import BlogPage from './pages/BlogPage';
 import SettingsPage from './pages/SettingsPage';
-
-// Component to update document title based on site name
-function DocumentTitle() {
-  const { siteName } = useSiteContext();
-  
-  useEffect(() => {
-    document.title = siteName;
-  }, [siteName]);
-  
-  return null;
-}
+import CategoryManagementPage from './pages/CategoryManagementPage';
 
 function App() {
   return (
     <Router>
       <SiteProvider>
-        <DocumentTitle />
+        <DocumentTitleUpdater />
         <AnalyticsProvider>
           <Routes>
             <Route path='/' element={<BlogPage />} />
@@ -38,6 +28,7 @@ function App() {
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/write-post' element={<WritePostPage />} />
             <Route path='/blog-management' element={<BlogManagementPage />} />
+            <Route path='/category-management' element={<CategoryManagementPage />} />
             <Route path='/admin' element={<AdminDashboard />} />
             <Route path='/settings' element={<SettingsPage />} />
           </Routes>
@@ -45,6 +36,17 @@ function App() {
       </SiteProvider>
     </Router>
   );
+}
+
+// Document title updater component
+function DocumentTitleUpdater() {
+  const { siteName } = useSiteContext();
+  
+  useEffect(() => {
+    document.title = siteName;
+  }, [siteName]);
+  
+  return null;
 }
 
 // Analytics provider component to initialize tracking

@@ -401,6 +401,42 @@ const AdminDashboard = () => {
                             </Link>
 
                             <Link
+                                to="/category-management"
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    padding: '15px',
+                                    backgroundColor: '#475569',
+                                    borderRadius: '8px',
+                                    textDecoration: 'none',
+                                    color: '#f1f5f9',
+                                    transition: 'background-color 0.2s',
+                                    border: '1px solid #475569'
+                                }}
+                                onMouseEnter={(e) => e.target.style.backgroundColor = '#64748b'}
+                                onMouseLeave={(e) => e.target.style.backgroundColor = '#475569'}
+                            >
+                                <div style={{
+                                    fontSize: '20px',
+                                    marginRight: '15px'
+                                }}>
+                                    🏷️
+                                </div>
+                                <div>
+                                    <h4 style={{ 
+                                        fontWeight: '600', 
+                                        margin: '0 0 3px 0',
+                                        fontSize: '16px'
+                                    }}>Manage Categories</h4>
+                                    <p style={{ 
+                                        color: '#6b7280', 
+                                        fontSize: '14px',
+                                        margin: 0
+                                    }}>Organize content with categories</p>
+                                </div>
+                            </Link>
+
+                            <Link
                                 to="/"
                                 style={{
                                     display: 'flex',

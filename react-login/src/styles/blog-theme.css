@@ -1,0 +1,205 @@
+/* Blog Theme CSS Variables */
+:root {
+  /* Light Theme Colors */
+  --blog-bg-primary: #ffffff;
+  --blog-bg-secondary: #f9fafb;
+  --blog-bg-tertiary: #f3f4f6;
+  
+  --blog-text-primary: #111827;
+  --blog-text-secondary: #6b7280;
+  --blog-text-muted: #9ca3af;
+  
+  --blog-border-primary: #e5e7eb;
+  --blog-border-secondary: #d1d5db;
+  
+  --blog-accent-primary: #3b82f6;
+  --blog-accent-hover: #2563eb;
+  --blog-accent-light: rgba(59, 130, 246, 0.1);
+  
+  --blog-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --blog-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  
+  /* Transition */
+  --blog-transition: all 0.2s ease;
+}
+
+/* Dark Theme Colors */
+[data-theme="dark"] {
+  --blog-bg-primary: #0f172a;
+  --blog-bg-secondary: #1e293b;
+  --blog-bg-tertiary: #334155;
+  
+  --blog-text-primary: #f1f5f9;
+  --blog-text-secondary: #cbd5e1;
+  --blog-text-muted: #94a3b8;
+  
+  --blog-border-primary: #334155;
+  --blog-border-secondary: #475569;
+  
+  --blog-accent-primary: #60a5fa;
+  --blog-accent-hover: #3b82f6;
+  --blog-accent-light: rgba(96, 165, 250, 0.1);
+  
+  --blog-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --blog-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Global blog styles using theme variables */
+.blog-container {
+  background-color: var(--blog-bg-primary);
+  color: var(--blog-text-primary);
+  transition: var(--blog-transition);
+  min-height: 100vh;
+}
+
+.blog-nav {
+  background-color: var(--blog-bg-primary);
+  border-bottom: 1px solid var(--blog-border-primary);
+  transition: var(--blog-transition);
+}
+
+.blog-nav-link {
+  color: var(--blog-text-secondary);
+  text-decoration: none;
+  transition: var(--blog-transition);
+}
+
+.blog-nav-link:hover {
+  color: var(--blog-text-primary);
+}
+
+.blog-nav-brand {
+  color: var(--blog-text-primary);
+  text-decoration: none;
+  transition: var(--blog-transition);
+}
+
+.blog-content {
+  background-color: var(--blog-bg-primary);
+  color: var(--blog-text-primary);
+}
+
+.blog-card {
+  background-color: var(--blog-bg-primary);
+  border-bottom: 1px solid var(--blog-border-primary);
+  transition: var(--blog-transition);
+}
+
+.blog-card:hover {
+  background-color: var(--blog-bg-secondary);
+}
+
+.blog-input {
+  background-color: var(--blog-bg-primary) !important;
+  color: var(--blog-text-primary) !important;
+  border: 1px solid var(--blog-border-primary) !important;
+  transition: var(--blog-transition);
+}
+
+.blog-input:focus {
+  border-color: var(--blog-accent-primary) !important;
+  box-shadow: 0 0 0 3px var(--blog-accent-light) !important;
+}
+
+.blog-select {
+  background-color: var(--blog-bg-primary) !important;
+  color: var(--blog-text-primary) !important;
+  border: 1px solid var(--blog-border-primary) !important;
+  transition: var(--blog-transition);
+}
+
+.blog-select:focus {
+  border-color: var(--blog-accent-primary) !important;
+  box-shadow: 0 0 0 3px var(--blog-accent-light) !important;
+}
+
+.blog-button {
+  background-color: var(--blog-bg-primary);
+  color: var(--blog-text-secondary);
+  border: 1px solid var(--blog-border-primary);
+  transition: var(--blog-transition);
+}
+
+.blog-button:hover {
+  background-color: var(--blog-bg-secondary);
+  border-color: var(--blog-accent-primary);
+  color: var(--blog-text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--blog-shadow-md);
+}
+
+.blog-filters {
+  background-color: var(--blog-bg-secondary);
+  border: 1px solid var(--blog-border-primary);
+  transition: var(--blog-transition);
+}
+
+.blog-post-title {
+  color: var(--blog-text-primary);
+}
+
+.blog-post-content {
+  color: var(--blog-text-secondary);
+}
+
+.blog-post-meta {
+  color: var(--blog-text-muted);
+}
+
+.blog-category-tag {
+  background-color: var(--blog-bg-tertiary);
+  color: var(--blog-text-secondary);
+  transition: var(--blog-transition);
+}
+
+.blog-tag {
+  background-color: var(--blog-bg-tertiary);
+  color: var(--blog-text-secondary);
+  transition: var(--blog-transition);
+}
+
+.blog-divider {
+  border-color: var(--blog-border-primary);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  background: var(--blog-bg-secondary);
+  border: 1px solid var(--blog-border-primary);
+  color: var(--blog-text-secondary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--blog-transition);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theme-toggle:hover {
+  background: var(--blog-bg-tertiary);
+  color: var(--blog-text-primary);
+  border-color: var(--blog-accent-primary);
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Disable transitions during theme change to prevent flash */
+.theme-transitioning * {
+  transition: none !important;
+}
+
+/* Ensure proper contrast in both themes */
+[data-theme="dark"] .blog-input::placeholder,
+[data-theme="dark"] .blog-select option {
+  color: var(--blog-text-muted);
+}
+
+[data-theme="light"] .blog-input::placeholder,
+[data-theme="light"] .blog-select option {
+  color: var(--blog-text-muted);
+}

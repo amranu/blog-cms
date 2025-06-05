@@ -6,6 +6,7 @@ import { useSiteContext } from '../contexts/SiteContext';
 import { useBlogTheme } from '../contexts/BlogThemeContext';
 import LaTeXRenderer from '../components/LaTeXRenderer';
 import BlogThemeToggle from '../components/BlogThemeToggle';
+import BlogComments from '../components/BlogComments';
 
 const BlogPage = () => {
     const { slug } = useParams();
@@ -92,6 +93,13 @@ const BlogPage = () => {
             setPostNotFound(true);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleCommentsUpdate = () => {
+        // Refresh the post to get updated comments
+        if (slug) {
+            fetchSinglePost(slug);
         }
     };
 
@@ -441,6 +449,13 @@ const BlogPage = () => {
                             </div>
                         </div>
                     )}
+                    
+                    {/* Comments Section */}
+                    <BlogComments 
+                        post={currentPost} 
+                        comments={currentPost.comments || []}
+                        onCommentsUpdate={handleCommentsUpdate}
+                    />
                     
                     {/* Back to posts link */}
                     <div className="blog-divider" style={{ textAlign: 'center', paddingTop: '32px', borderTop: '1px solid' }}>

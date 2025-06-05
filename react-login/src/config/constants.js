@@ -18,6 +18,13 @@ export const API_ENDPOINTS = {
   // Categories
   BLOG_CATEGORIES: `${API_BASE_URL}/blog/categories`,
   
+  // Comments
+  BLOG_COMMENTS: (postId) => `${API_BASE_URL}/blog/posts/${postId}/comments`,
+  APPROVE_COMMENT: (commentId) => `${API_BASE_URL}/blog/comments/${commentId}/approve`,
+  REJECT_COMMENT: (commentId) => `${API_BASE_URL}/blog/comments/${commentId}/reject`,
+  DELETE_COMMENT: (commentId) => `${API_BASE_URL}/blog/comments/${commentId}`,
+  PENDING_COMMENTS: `${API_BASE_URL}/blog/comments/pending`,
+  
   // Image uploads
   UPLOAD_IMAGE: `https://isodigm.ca/api/uploads/upload-image`,
   IMAGE_URL: (filename) => `https://isodigm.ca/api/uploads/images/${filename}`,

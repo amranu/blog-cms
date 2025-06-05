@@ -2,11 +2,30 @@ import React from 'react';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
-const LaTeXRenderer = ({ content }) => {
+const LaTeXRenderer = ({ content, style = {} }) => {
   if (!content) return null;
 
-  // Process Markdown images first, then LaTeX
+  // Process Markdown formatting first, then images, then LaTeX
   const processMarkdown = (text) => {
+    // First handle markdown formatting (bold, italic, etc.)
+    const processMarkdownFormatting = (text) => {
+      // Handle bold **text** and __text__
+      text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      text = text.replace(/__(.*?)__/g, '<strong>$1</strong>');
+      
+      // Handle italic *text* and _text_
+      text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      text = text.replace(/_(.*?)_/g, '<em>$1</em>');
+      
+      // Handle code `text`
+      text = text.replace(/`(.*?)`/g, '<code style="background-color: var(--blog-bg-tertiary); padding: 2px 4px; border-radius: 3px; font-family: monospace; font-size: 0.9em; color: var(--blog-text-primary);">$1</code>');
+      
+      return text;
+    };
+    
+    // Apply markdown formatting
+    text = processMarkdownFormatting(text);
+    
     // Handle Markdown images: ![alt](url)
     const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
     let parts = [];
@@ -113,9 +132,10 @@ const LaTeXRenderer = ({ content }) => {
         const beforeText = text.slice(lastIndex, match.index);
         if (beforeText) {
           parts.push(
-            <span key={`text-${startIndex}-${parts.length}`}>
-              {beforeText}
-            </span>
+            <span 
+              key={`text-${startIndex}-${parts.length}`}
+              dangerouslySetInnerHTML={{ __html: beforeText }}
+            />
           );
         }
       }
@@ -133,16 +153,17 @@ const LaTeXRenderer = ({ content }) => {
       const remainingText = text.slice(lastIndex);
       if (remainingText) {
         parts.push(
-          <span key={`text-${startIndex}-${parts.length}`}>
-            {remainingText}
-          </span>
+          <span 
+            key={`text-${startIndex}-${parts.length}`}
+            dangerouslySetInnerHTML={{ __html: remainingText }}
+          />
         );
       }
     }
     
-    // If no math was found, return the original text
+    // If no math was found, return the original text with HTML formatting
     if (parts.length === 0) {
-      return [<span key={`text-${startIndex}`}>{text}</span>];
+      return [<span key={`text-${startIndex}`} dangerouslySetInnerHTML={{ __html: text }} />];
     }
     
     return parts;
@@ -152,7 +173,7 @@ const LaTeXRenderer = ({ content }) => {
   const lines = content.split('\n');
   
   return (
-    <div>
+    <div style={{ color: 'inherit', ...style }}>
       {lines.map((line, index) => (
         <div key={index} style={{ marginBottom: line.trim() === '' ? '16px' : '0' }}>
           {line.trim() === '' ? (

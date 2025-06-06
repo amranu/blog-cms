@@ -210,6 +210,11 @@ const CommentForm = ({
 
 const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => {
   const [comments, setComments] = useState(initialComments || []);
+  
+  // Update local comments when prop changes (e.g., from server refresh)
+  React.useEffect(() => {
+    setComments(initialComments || []);
+  }, [initialComments]);
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [replyingTo, setReplyingTo] = useState(null);
   const [formData, setFormData] = useState({
@@ -220,6 +225,7 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  const [deletingCommentId, setDeletingCommentId] = useState(null);
 
   // Helper function to get logged-in user data for auto-filling
   const getLoggedInUserData = () => {
@@ -242,6 +248,23 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
       }
     }
     return null;
+  };
+
+  // Helper function to check if current user is admin
+  const isCurrentUserAdmin = () => {
+    const userItem = localStorage.getItem('user');
+    if (userItem) {
+      try {
+        const parsedUser = JSON.parse(userItem);
+        const currentTime = new Date().getTime();
+        if (currentTime < parsedUser.expiry && parsedUser.data) {
+          return parsedUser.data.is_admin === true;
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+    return false;
   };
 
   // Auto-fill form data for logged-in users
@@ -316,6 +339,28 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
 
       if (response.ok) {
         setSubmitMessage(result.message || 'Comment submitted successfully!');
+        
+        // Add the new comment to local state immediately for better UX
+        if (result.comment && result.comment.status === 'approved') {
+          setComments(prevComments => {
+            if (result.comment.parent_id) {
+              // Handle replies - add to parent comment's replies
+              return prevComments.map(comment => {
+                if (comment.id === result.comment.parent_id) {
+                  return {
+                    ...comment,
+                    replies: [...(comment.replies || []), result.comment]
+                  };
+                }
+                return comment;
+              });
+            } else {
+              // Add as top-level comment
+              return [result.comment, ...prevComments];
+            }
+          });
+        }
+        
         // Reset form but keep user data if logged in
         const userData = getLoggedInUserData();
         setFormData({
@@ -324,9 +369,12 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
           author_email: userData ? userData.author_email : '',
           author_website: ''
         });
+        
+        // Call update callback to refresh from server (ensures consistency)
         if (onCommentsUpdate) {
           onCommentsUpdate();
         }
+        
         // Auto-hide form after successful submission
         setTimeout(() => {
           setShowCommentForm(false);
@@ -347,6 +395,61 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
     setReplyingTo(commentId);
     setShowCommentForm(true);
     setSubmitMessage('');
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm('Are you sure you want to delete this comment? This action cannot be undone.')) {
+      return;
+    }
+
+    setDeletingCommentId(commentId);
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Authentication required');
+        return;
+      }
+
+      const response = await fetch(API_ENDPOINTS.DELETE_COMMENT(commentId), {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        // Remove comment from local state immediately
+        setComments(prevComments => {
+          const removeComment = (commentList) => {
+            return commentList.filter(comment => {
+              if (comment.id === commentId) {
+                return false; // Remove this comment
+              }
+              if (comment.replies) {
+                comment.replies = removeComment(comment.replies); // Remove from replies recursively
+              }
+              return true;
+            });
+          };
+          return removeComment(prevComments);
+        });
+
+        // Also refresh from server to ensure consistency
+        if (onCommentsUpdate) {
+          onCommentsUpdate();
+        }
+      } else {
+        const error = await response.json();
+        alert(`Failed to delete comment: ${error.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      alert('Failed to delete comment. Please try again.');
+    } finally {
+      setDeletingCommentId(null);
+    }
   };
 
   const handleCancelComment = () => {
@@ -406,29 +509,63 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
           </div>
         </div>
         
-        <button
-          onClick={() => handleReply(comment.id)}
-          style={{
-            padding: '4px 8px',
-            fontSize: '12px',
-            color: 'var(--blog-accent-primary)',
-            backgroundColor: 'transparent',
-            border: '1px solid var(--blog-accent-primary)',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            transition: 'all 0.2s'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = 'var(--blog-accent-primary)';
-            e.target.style.color = 'white';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = 'transparent';
-            e.target.style.color = 'var(--blog-accent-primary)';
-          }}
-        >
-          Reply
-        </button>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          {isCurrentUserAdmin() && (
+            <button
+              onClick={() => handleDeleteComment(comment.id)}
+              disabled={deletingCommentId === comment.id}
+              style={{
+                padding: '4px 8px',
+                fontSize: '12px',
+                color: '#ef4444',
+                backgroundColor: 'transparent',
+                border: '1px solid #ef4444',
+                borderRadius: '4px',
+                cursor: deletingCommentId === comment.id ? 'not-allowed' : 'pointer',
+                transition: 'all 0.2s',
+                opacity: deletingCommentId === comment.id ? 0.6 : 1
+              }}
+              onMouseEnter={(e) => {
+                if (deletingCommentId !== comment.id) {
+                  e.target.style.backgroundColor = '#ef4444';
+                  e.target.style.color = 'white';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (deletingCommentId !== comment.id) {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.color = '#ef4444';
+                }
+              }}
+            >
+              {deletingCommentId === comment.id ? 'Deleting...' : 'Delete'}
+            </button>
+          )}
+          
+          <button
+            onClick={() => handleReply(comment.id)}
+            style={{
+              padding: '4px 8px',
+              fontSize: '12px',
+              color: 'var(--blog-accent-primary)',
+              backgroundColor: 'transparent',
+              border: '1px solid var(--blog-accent-primary)',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = 'var(--blog-accent-primary)';
+              e.target.style.color = 'white';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'transparent';
+              e.target.style.color = 'var(--blog-accent-primary)';
+            }}
+          >
+            Reply
+          </button>
+        </div>
       </div>
       
       <div style={{ color: 'var(--blog-text-primary)', lineHeight: '1.6' }}>

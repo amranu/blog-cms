@@ -38,7 +38,15 @@ def login():
         return jsonify({
             "login": True, 
             "token": token,
-            "user": {'id': user.id, 'username': user.username, 'is_admin': user.is_admin, 'is_verified': user.email_verified}
+            "user": {
+                'id': user.id, 
+                'username': user.username, 
+                'email': user.email,
+                'firstname': user.firstname,
+                'lastname': user.lastname,
+                'is_admin': user.is_admin, 
+                'is_verified': user.email_verified
+            }
         }), 200
     else:
         return jsonify({"login": False, "error": "Invalid credentials"}), 401
@@ -159,33 +167,129 @@ def verify_email():
     token = request.args.get('token')
     
     if not token:
-        return jsonify({"verified": False, "error": "Verification token is required"}), 400
+        return '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Invalid Link - Blog CMS</title>
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; text-align: center; }
+                .error { color: #f44336; }
+                .btn { background-color: #008CBA; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
+                .btn:hover { background-color: #007BB5; }
+            </style>
+        </head>
+        <body>
+            <h1 class="error">✗ Invalid Verification Link</h1>
+            <p>The verification link is missing required information. Please check your email and try clicking the link again.</p>
+            <a href="/" class="btn">Go to Home</a>
+        </body>
+        </html>
+        ''', 400
     
     # Find user with this verification token
-    user = User.query.filter_by(verification_token=token).first()
+    user = User.query.filter_by(email_verification_token=token).first()
     
     if not user:
-        return jsonify({"verified": False, "error": "Invalid verification token"}), 400
+        return '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Invalid Token - Blog CMS</title>
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; text-align: center; }
+                .error { color: #f44336; }
+                .btn { background-color: #008CBA; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
+                .btn:hover { background-color: #007BB5; }
+            </style>
+        </head>
+        <body>
+            <h1 class="error">✗ Invalid Verification Token</h1>
+            <p>This verification link is not valid. It may have already been used or the token is incorrect.</p>
+            <a href="/" class="btn">Go to Home</a>
+        </body>
+        </html>
+        ''', 400
     
     # Check if token is valid and not expired
     if not user.is_verification_token_valid(token):
-        return jsonify({
-            "verified": False, 
-            "error": "Verification token has expired. Please register again."
-        }), 400
+        return '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Link Expired - Blog CMS</title>
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; text-align: center; }
+                .error { color: #f44336; }
+                .btn { background-color: #008CBA; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
+                .btn:hover { background-color: #007BB5; }
+            </style>
+        </head>
+        <body>
+            <h1 class="error">✗ Verification Link Expired</h1>
+            <p>This verification link has expired. Verification links are valid for 24 hours. Please register again to receive a new verification email.</p>
+            <a href="/" class="btn">Go to Home</a>
+        </body>
+        </html>
+        ''', 400
     
     # Verify the user
     user.verify_email()
     
     try:
         db.session.commit()
-        return jsonify({
-            "verified": True,
-            "message": "Email verified successfully! You can now log in."
-        }), 200
+        # Return HTML page for successful verification
+        return '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Email Verified - Blog CMS</title>
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; text-align: center; }
+                .success { color: #4CAF50; }
+                .btn { background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
+                .btn:hover { background-color: #45a049; }
+            </style>
+        </head>
+        <body>
+            <h1 class="success">✓ Email Verified Successfully!</h1>
+            <p>Your email address has been verified. You can now log in to your Blog CMS account.</p>
+            <a href="/login" class="btn">Go to Login</a>
+        </body>
+        </html>
+        ''', 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({"verified": False, "error": "Verification failed"}), 500
+        # Return HTML page for verification failure
+        return '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Verification Failed - Blog CMS</title>
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; text-align: center; }
+                .error { color: #f44336; }
+                .btn { background-color: #008CBA; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
+                .btn:hover { background-color: #007BB5; }
+            </style>
+        </head>
+        <body>
+            <h1 class="error">✗ Verification Failed</h1>
+            <p>There was an error verifying your email address. Please try again or contact support.</p>
+            <a href="/" class="btn">Go to Home</a>
+        </body>
+        </html>
+        ''', 500
 
 @auth_bp.route('/resend-verification', methods=['POST'])
 def resend_verification():
@@ -205,7 +309,7 @@ def resend_verification():
             "message": "If an account with this email exists, a verification email has been sent."
         }), 200
     
-    if user.is_verified:
+    if user.email_verified:
         return jsonify({"sent": False, "error": "Email is already verified"}), 400
     
     # Generate new verification token

@@ -235,7 +235,7 @@ const BlogPage = () => {
                         
                         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                             <BlogThemeToggle />
-                            {user && (
+                            {user && user.is_admin && (
                                 <Link 
                                     to="/admin" 
                                     className="blog-nav-link"

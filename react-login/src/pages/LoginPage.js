@@ -15,7 +15,7 @@ function LoginPage() {
     if (userItem) {
       const currentTime = new Date().getTime();
       if (currentTime < userItem.expiry) {
-        navigate('/admin');
+        navigate('/');
       } else {
         // Session expired, remove user data from local storage
         localStorage.removeItem('user');
@@ -40,18 +40,11 @@ function LoginPage() {
     const data = await response.json();
 
     if (data.login) {
-      // Check if user is admin
-      if (!data.user.is_admin) {
-        console.error('Access denied: Admin privileges required');
-        alert('Access denied: Admin privileges required');
-        return;
-      }
-      
       // Save user session data and token in local storage with expiry time
       const expiryTime = new Date().getTime() + 30 * 24 * 60 * 60 * 1000; // 30 days from now
       localStorage.setItem('user', JSON.stringify({ data: data.user, expiry: expiryTime }));
       localStorage.setItem('token', data.token); // Store JWT token
-      navigate('/admin');
+      navigate('/');
     } else {
       // Handle login error. You might want to set some error state here
       console.error('Login failed:', data.error);

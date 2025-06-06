@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS } from '../config/constants';
 import LaTeXRenderer from './LaTeXRenderer';
 
@@ -221,6 +221,56 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
+  // Helper function to get logged-in user data for auto-filling
+  const getLoggedInUserData = () => {
+    const userItem = localStorage.getItem('user');
+    if (userItem) {
+      try {
+        const parsedUser = JSON.parse(userItem);
+        const currentTime = new Date().getTime();
+        if (currentTime < parsedUser.expiry && parsedUser.data) {
+          const user = parsedUser.data;
+          const fullName = `${user.firstname || ''} ${user.lastname || ''}`.trim();
+          
+          return {
+            author_name: fullName || user.username || '',
+            author_email: user.email || ''
+          };
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+    return null;
+  };
+
+  // Auto-fill form data for logged-in users
+  useEffect(() => {
+    const userData = getLoggedInUserData();
+    if (userData) {
+      setFormData(prevData => ({
+        ...prevData,
+        author_name: userData.author_name,
+        author_email: userData.author_email,
+        // Keep existing content and website as user may have started typing
+        content: prevData.content,
+        author_website: prevData.author_website
+      }));
+    }
+  }, [showCommentForm, replyingTo]); // Re-run when comment form is shown or when replying
+
+  // Function to count all comments including replies recursively
+  const countAllComments = (commentList) => {
+    let count = 0;
+    commentList.forEach(comment => {
+      count += 1; // Count the comment itself
+      if (comment.replies && comment.replies.length > 0) {
+        count += countAllComments(comment.replies); // Count replies recursively
+      }
+    });
+    return count;
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -246,22 +296,32 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
         parent_id: replyingTo
       };
 
+      // Include authentication token if user is logged in
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      
+      const token = localStorage.getItem('token');
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(API_ENDPOINTS.BLOG_COMMENTS(post.id), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers,
         body: JSON.stringify(commentData)
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        setSubmitMessage('Comment submitted successfully! It will appear after approval.');
+        setSubmitMessage(result.message || 'Comment submitted successfully!');
+        // Reset form but keep user data if logged in
+        const userData = getLoggedInUserData();
         setFormData({
           content: '',
-          author_name: '',
-          author_email: '',
+          author_name: userData ? userData.author_name : '',
+          author_email: userData ? userData.author_email : '',
           author_website: ''
         });
         if (onCommentsUpdate) {
@@ -293,10 +353,12 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
     setShowCommentForm(false);
     setReplyingTo(null);
     setSubmitMessage('');
+    // Reset form but keep user data if logged in
+    const userData = getLoggedInUserData();
     setFormData({
       content: '',
-      author_name: '',
-      author_email: '',
+      author_name: userData ? userData.author_name : '',
+      author_email: userData ? userData.author_email : '',
       author_website: ''
     });
   };
@@ -405,7 +467,7 @@ const BlogComments = ({ post, comments: initialComments, onCommentsUpdate }) => 
           color: 'var(--blog-text-primary)',
           margin: 0
         }}>
-          Comments ({comments.length})
+          Comments ({countAllComments(comments)})
         </h2>
         
         {!showCommentForm && (

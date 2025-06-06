@@ -7,6 +7,7 @@ from flask import Blueprint, request, jsonify, current_app
 from utils.validation import sanitize_input, validate_blog_post
 from utils.auth import token_required, admin_required
 from __init__ import db
+from models.user import User
 from shared_models import get_blog_post, get_blog_comment, get_blog_category
 
 blog_bp = Blueprint('blog', __name__)
@@ -368,6 +369,30 @@ def create_comment(post_id):
         if author_website and not re.match(r'^https?://', author_website):
             author_website = 'http://' + author_website
         
+        # Check if commenter is a verified user for auto-approval
+        # First check if user is authenticated (logged in)
+        authenticated_user = None
+        auth_header = request.headers.get('Authorization')
+        if auth_header and auth_header.startswith('Bearer '):
+            try:
+                from utils.auth import verify_token
+                token = auth_header.split(' ')[1]
+                user_id = verify_token(token)
+                if user_id:
+                    authenticated_user = User.query.get(user_id)
+            except:
+                pass  # Invalid token, continue as anonymous user
+        
+        # Determine comment status based on authentication and verification
+        if authenticated_user and authenticated_user.email_verified:
+            # Authenticated and verified user - auto-approve
+            comment_status = 'approved'
+            verified_user = authenticated_user
+        else:
+            # Anonymous user or unverified - check by email for verification
+            verified_user = User.query.filter_by(email=author_email, email_verified=True).first()
+            comment_status = 'approved' if verified_user else 'pending'
+        
         comment = BlogComment(
             post_id=post_id,
             content=content,
@@ -375,18 +400,25 @@ def create_comment(post_id):
             author_email=author_email,
             author_website=author_website,
             parent_id=parent_id,
-            status='pending',  # Comments require approval by default
+            status=comment_status,
             ip_address=client_ip
         )
         
         db.session.add(comment)
         db.session.commit()
         
-        current_app.logger.info(f"New comment created for post {post_id} by {author_name}")
+        current_app.logger.info(f"New comment created for post {post_id} by {author_name} (status: {comment_status})")
+        
+        # Different messages based on approval status
+        if verified_user:
+            message = 'Comment posted successfully!'
+        else:
+            message = 'Comment submitted successfully and is pending approval'
         
         return jsonify({
-            'message': 'Comment submitted successfully and is pending approval',
-            'comment': comment.to_dict()
+            'message': message,
+            'comment': comment.to_dict(),
+            'auto_approved': bool(verified_user)
         }), 201
         
     except Exception as e:

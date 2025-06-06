@@ -7,6 +7,7 @@ import { useBlogTheme } from '../contexts/BlogThemeContext';
 import LaTeXRenderer from '../components/LaTeXRenderer';
 import BlogThemeToggle from '../components/BlogThemeToggle';
 import BlogComments from '../components/BlogComments';
+import ShareButton from '../components/ShareButton';
 
 const BlogPage = () => {
     const { slug } = useParams();
@@ -393,13 +394,16 @@ const BlogPage = () => {
                         <div className="blog-post-meta" style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '16px',
+                            justifyContent: 'space-between',
                             fontSize: '14px',
                             fontWeight: '500'
                         }}>
-                            <time>{formatDate(currentPost.published_at || currentPost.created_at)}</time>
-                            <span>•</span>
-                            <span>{Math.ceil(currentPost.content.split(' ').length / 200)} min read</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                <time>{formatDate(currentPost.published_at || currentPost.created_at)}</time>
+                                <span>•</span>
+                                <span>{Math.ceil(currentPost.content.split(' ').length / 200)} min read</span>
+                            </div>
+                            <ShareButton post={currentPost} />
                         </div>
                     </header>
 

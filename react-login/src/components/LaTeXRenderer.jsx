@@ -63,6 +63,17 @@ const LaTeXRenderer = ({ content, style = {} }) => {
               e.target.parentNode.appendChild(errorDiv);
             }}
           />
+          {altText && altText.trim() && (
+            <div style={{
+              marginTop: '8px',
+              fontSize: '14px',
+              color: '#6b7280',
+              fontStyle: 'italic',
+              textAlign: 'center'
+            }}>
+              {altText}
+            </div>
+          )}
         </div>
       );
       

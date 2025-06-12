@@ -1,6 +1,6 @@
 # Blog CMS Ansible Deployment
 
-This directory contains an Ansible playbook for deploying the Blog CMS application to remote servers.
+This directory contains an Ansible playbook for deploying the Blog CMS application to remote servers using Docker Compose.
 
 ## Quick Start
 
@@ -52,35 +52,40 @@ ansible-playbook -i inventory.ini ansible-playbook.yml \
 ```
 
 Available variables:
-- `deploy_dir`: Application deployment directory (default: `/opt/blog-cms-deploy`)
+- `deploy_dir`: Application deployment directory (default: `/opt/blog-cms`)
 - `app_user`: Application user (default: `blogcms`)
 - `app_group`: Application group (default: `blogcms`)
-- `python_version`: Python version (default: `3.11`)
+- `domain_name`: Domain name for SSL and nginx configuration
 
 ## Post-Deployment
 
 1. **Create admin user**:
    ```bash
    ssh your-server
-   cd /opt/blog-cms-deploy
-   python3 create_admin.py
+   cd /opt/blog-cms
+   docker compose exec flask-api python create_admin.py
    ```
 
 2. **Access your blog**: `http://your-domain.com`
 
 3. **Service management**:
    ```bash
-   # Check service status
-   sudo systemctl status flask-api
-   sudo systemctl status react-app
-   sudo systemctl status nginx
+   # Check Docker Compose service status
+   sudo systemctl status blog-cms-docker
 
-   # View logs
-   sudo journalctl -u flask-api -f
-   sudo journalctl -u react-app -f
+   # View container logs
+   cd /opt/blog-cms
+   docker compose logs -f flask-api
+   docker compose logs -f react-app
+   docker compose logs -f nginx
 
-   # Restart services
-   sudo systemctl restart flask-api react-app nginx
+   # Restart all containers
+   sudo systemctl restart blog-cms-docker
+   
+   # Or restart individual containers
+   docker compose restart flask-api
+   docker compose restart react-app
+   docker compose restart nginx
    ```
 
 ## SSL/HTTPS Setup
@@ -113,25 +118,38 @@ Replace `YOUR_USERNAME` with your actual GitHub username or organization.
 
 After deployment:
 ```
-/opt/blog-cms-deploy/
-├── flask-api/              # Flask backend
-│   ├── venv/              # Python virtual environment
-│   ├── instance/          # SQLite database
+/opt/blog-cms/
+├── docker-compose.yml     # Docker Compose configuration
+├── .env                   # Environment variables
+├── flask-api/             # Flask backend source
+│   ├── Dockerfile        # Flask container definition
 │   └── ...
-├── react-login/           # React frontend
-│   ├── build/             # Production build
+├── react-login/          # React frontend source
+│   ├── Dockerfile        # React container definition
 │   └── ...
-└── create_admin.py        # Admin user creation script
+├── nginx/                # Nginx configuration
+│   └── blog-cms.template # Nginx config template
+└── create_admin.py       # Admin user creation script
 ```
+
+## Docker Architecture
+
+The deployment uses Docker Compose with three services:
+- **flask-api**: Python Flask API backend (internal port 5000)
+- **react-app**: React frontend application (internal port 3000)
+- **nginx**: Reverse proxy and web server (ports 80/443)
+
+All services are managed by the `blog-cms-docker` systemd service.
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Service fails to start**: Check logs with `journalctl -u SERVICE_NAME`
-2. **Permission denied**: Ensure correct file ownership with `chown -R blogcms:blogcms /opt/blog-cms-deploy`
-3. **Database issues**: Check SQLite file permissions in `instance/` directory
-4. **Nginx errors**: Check configuration with `nginx -t`
+1. **Service fails to start**: Check logs with `journalctl -u blog-cms-docker -f`
+2. **Container issues**: Check container status with `docker compose ps` and logs with `docker compose logs`
+3. **Permission denied**: Ensure correct file ownership with `chown -R blogcms:blogcms /opt/blog-cms`
+4. **Database issues**: Database is stored in Docker volume `flask-data`
+5. **Port conflicts**: Ensure ports 80 and 443 are not used by other services
 
 ### Useful Commands
 
@@ -139,14 +157,27 @@ After deployment:
 # Test Ansible connectivity
 ansible -i inventory.ini all -m ping
 
-# Run only specific tasks
-ansible-playbook -i inventory.ini ansible-playbook.yml --tags "services"
-
 # Check playbook syntax
 ansible-playbook --syntax-check ansible-playbook.yml
 
 # Dry run
 ansible-playbook -i inventory.ini ansible-playbook.yml --check
+
+# Docker-specific commands on target server
+ssh your-server
+cd /opt/blog-cms
+
+# View all containers
+docker compose ps
+
+# Rebuild containers
+docker compose up -d --build
+
+# Stop all containers
+docker compose down
+
+# Remove containers and volumes (WARNING: destroys data)
+docker compose down -v
 ```
 
 ## Security Considerations
@@ -162,6 +193,7 @@ ansible-playbook -i inventory.ini ansible-playbook.yml --check
 
 - **Target servers**: Ubuntu 20.04+ or Debian 11+
 - **Ansible version**: 2.9+
-- **Python**: 3.8+ on target servers
-- **Memory**: 1GB+ RAM recommended
-- **Storage**: 2GB+ available space
+- **Docker**: Installed and running on target servers
+- **Memory**: 2GB+ RAM recommended (for Docker containers)
+- **Storage**: 3GB+ available space
+- **Ports**: 80, 443 available for nginx

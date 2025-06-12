@@ -2,18 +2,26 @@
 """
 Script to create an admin user for the Blog CMS.
 Run this script after deployment to set up the initial admin account.
+
+For Docker deployment, run this inside the flask-api container:
+docker compose exec flask-api python /app/create_admin.py
 """
 
 import sys
 import os
 import getpass
 
-# Add the flask-api directory to the Python path
-sys.path.insert(0, '{{ deploy_dir }}/flask-api')
-
-from api import app, db
-from models.user import User
-from werkzeug.security import generate_password_hash
+# For Docker deployment, the script should be copied to the container
+try:
+    from api import app, db
+    from models.user import User
+    from werkzeug.security import generate_password_hash
+except ImportError:
+    # Add the flask-api directory to the Python path for local execution
+    sys.path.insert(0, '{{ deploy_dir }}/flask-api')
+    from api import app, db
+    from models.user import User
+    from werkzeug.security import generate_password_hash
 
 def create_admin_user():
     """Create an admin user interactively."""

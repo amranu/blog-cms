@@ -7,6 +7,7 @@ from flask import Blueprint, request, jsonify, current_app
 from utils.validation import sanitize_input, validate_blog_post
 from utils.auth import token_required, admin_required
 from __init__ import db
+from models.user import User
 from shared_models import get_blog_post, get_blog_comment, get_blog_category
 
 blog_bp = Blueprint('blog', __name__)
@@ -323,3 +324,176 @@ def delete_blog_category(user, category_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
+
+# Comment routes
+@blog_bp.route('/posts/<int:post_id>/comments', methods=['POST'])
+def create_comment(post_id):
+    """Create a new comment on a blog post"""
+    try:
+        data = request.json
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+        
+        # Validate required fields
+        required_fields = ['content', 'author_name', 'author_email']
+        for field in required_fields:
+            if not data.get(field, '').strip():
+                return jsonify({'error': f'{field} is required'}), 400
+        
+        # Validate email format
+        import re
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_pattern, data['author_email']):
+            return jsonify({'error': 'Invalid email format'}), 400
+        
+        # Check if post exists
+        post = BlogPost.query.get_or_404(post_id)
+        
+        # Validate parent comment if replying
+        parent_id = data.get('parent_id')
+        if parent_id:
+            parent_comment = BlogComment.query.get(parent_id)
+            if not parent_comment or parent_comment.post_id != post_id:
+                return jsonify({'error': 'Invalid parent comment'}), 400
+        
+        # Get client IP for spam prevention
+        client_ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.environ.get('REMOTE_ADDR', ''))
+        
+        # Sanitize inputs
+        content = sanitize_input(data['content'], allow_markdown=True)
+        author_name = sanitize_input(data['author_name'])
+        author_email = sanitize_input(data['author_email'])
+        author_website = sanitize_input(data.get('author_website', ''))
+        
+        # Validate website URL if provided
+        if author_website and not re.match(r'^https?://', author_website):
+            author_website = 'http://' + author_website
+        
+        # Check if commenter is a verified user for auto-approval
+        # First check if user is authenticated (logged in)
+        authenticated_user = None
+        auth_header = request.headers.get('Authorization')
+        if auth_header and auth_header.startswith('Bearer '):
+            try:
+                from utils.auth import verify_token
+                token = auth_header.split(' ')[1]
+                user_id = verify_token(token)
+                if user_id:
+                    authenticated_user = User.query.get(user_id)
+            except:
+                pass  # Invalid token, continue as anonymous user
+        
+        # Determine comment status based on authentication and verification
+        if authenticated_user and authenticated_user.email_verified:
+            # Authenticated and verified user - auto-approve
+            comment_status = 'approved'
+            verified_user = authenticated_user
+        else:
+            # Anonymous user or unverified - check by email for verification
+            verified_user = User.query.filter_by(email=author_email, email_verified=True).first()
+            comment_status = 'approved' if verified_user else 'pending'
+        
+        comment = BlogComment(
+            post_id=post_id,
+            content=content,
+            author_name=author_name,
+            author_email=author_email,
+            author_website=author_website,
+            parent_id=parent_id,
+            status=comment_status,
+            ip_address=client_ip
+        )
+        
+        db.session.add(comment)
+        db.session.commit()
+        
+        current_app.logger.info(f"New comment created for post {post_id} by {author_name} (status: {comment_status})")
+        
+        # Different messages based on approval status
+        if verified_user:
+            message = 'Comment posted successfully!'
+        else:
+            message = 'Comment submitted successfully and is pending approval'
+        
+        return jsonify({
+            'message': message,
+            'comment': comment.to_dict(),
+            'auto_approved': bool(verified_user)
+        }), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Error creating comment: {str(e)}")
+        return jsonify({'error': 'Failed to create comment'}), 500
+
+@blog_bp.route('/comments/<int:comment_id>/approve', methods=['POST'])
+@admin_required
+def approve_comment(user, comment_id):
+    """Approve a pending comment"""
+    try:
+        comment = BlogComment.query.get_or_404(comment_id)
+        comment.status = 'approved'
+        db.session.commit()
+        
+        current_app.logger.info(f"Comment {comment_id} approved by admin {user.username}")
+        return jsonify({'message': 'Comment approved successfully'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
+@blog_bp.route('/comments/<int:comment_id>/reject', methods=['POST'])
+@admin_required
+def reject_comment(user, comment_id):
+    """Reject a comment"""
+    try:
+        comment = BlogComment.query.get_or_404(comment_id)
+        comment.status = 'rejected'
+        db.session.commit()
+        
+        current_app.logger.info(f"Comment {comment_id} rejected by admin {user.username}")
+        return jsonify({'message': 'Comment rejected successfully'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
+@blog_bp.route('/comments/<int:comment_id>', methods=['DELETE'])
+@admin_required
+def delete_comment(user, comment_id):
+    """Delete a comment"""
+    try:
+        comment = BlogComment.query.get_or_404(comment_id)
+        db.session.delete(comment)
+        db.session.commit()
+        
+        current_app.logger.info(f"Comment {comment_id} deleted by admin {user.username}")
+        return jsonify({'message': 'Comment deleted successfully'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
+@blog_bp.route('/comments/pending', methods=['GET'])
+@admin_required
+def get_pending_comments(user):
+    """Get all pending comments for admin review"""
+    try:
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 20, type=int)
+        
+        comments = BlogComment.query.filter_by(status='pending')\
+            .order_by(BlogComment.created_at.desc())\
+            .paginate(page=page, per_page=per_page, error_out=False)
+        
+        return jsonify({
+            'comments': [comment.to_dict() for comment in comments.items],
+            'total': comments.total,
+            'pages': comments.pages,
+            'current_page': page,
+            'per_page': per_page
+        })
+        
+    except Exception as e:
+        current_app.logger.error(f"Error fetching pending comments: {str(e)}")
+        return jsonify({'error': 'Failed to fetch comments'}), 500

@@ -30,6 +30,15 @@ server {
     ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
 
+    # Email verification link (must be before catch-all location /)
+    location /verify-email {
+        proxy_pass http://flask_backend/verify-email;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
     # React app
     location / {
         proxy_pass http://react_backend;
@@ -50,6 +59,8 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        # Increase upload size limit for images
+        client_max_body_size 10M;
     }
 
     # Auth API endpoints (only for API calls, not page routes)
@@ -63,6 +74,14 @@ server {
 
     location /api/register_user {
         proxy_pass http://flask_backend/register_user;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/register {
+        proxy_pass http://flask_backend/register;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

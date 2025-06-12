@@ -38,14 +38,34 @@ body {
   color: #94a3b8 !important;
 }
 
-/* Form element overrides */
-input, textarea, select {
+/* Form element overrides - exclude blog pages */
+.admin-page input,
+.admin-page textarea,
+.admin-page select {
   background-color: #1e293b !important;
   color: #f1f5f9 !important;
   border-color: #334155 !important;
 }
 
-input:focus, textarea:focus, select:focus {
+.admin-page input:focus,
+.admin-page textarea:focus,
+.admin-page select:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Admin form styles - only apply to admin pages, not blog */
+body:not(.blog-page) input,
+body:not(.blog-page) textarea,
+body:not(.blog-page) select {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+
+body:not(.blog-page) input:focus,
+body:not(.blog-page) textarea:focus,
+body:not(.blog-page) select:focus {
   border-color: #3b82f6 !important;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
 }

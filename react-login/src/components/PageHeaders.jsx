@@ -371,6 +371,26 @@ function PageHeaders() {
             Manage Categories
           </Link>
 
+          <Link to="/comment-moderation" style={{ 
+            display: 'flex',
+            alignItems: 'center',
+            textDecoration: 'none', 
+            color: 'rgba(255,255,255,0.95)', 
+            padding: '15px 20px',
+            borderRadius: '0 25px 25px 0',
+            margin: '3px 0 3px 0',
+            transition: 'all 0.2s',
+            backgroundColor: window.location.pathname === '/comment-moderation' ? 'rgba(255,255,255,0.2)' : 'transparent',
+            fontSize: '15px',
+            fontWeight: '500'
+          }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.15)'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = window.location.pathname === '/comment-moderation' ? 'rgba(255,255,255,0.2)' : 'transparent'}
+          >
+            <span style={{ marginRight: '12px', fontSize: '18px' }}>💬</span>
+            Moderate Comments
+          </Link>
+
           {/* Settings Section */}
           <Link 
           to="/settings"

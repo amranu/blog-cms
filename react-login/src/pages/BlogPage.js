@@ -3,7 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { API_ENDPOINTS, APP_CONFIG } from '../config/constants';
 import { useBlogPostAnalytics, useAnalytics } from '../hooks/useAnalytics';
 import { useSiteContext } from '../contexts/SiteContext';
+import { useBlogTheme } from '../contexts/BlogThemeContext';
 import LaTeXRenderer from '../components/LaTeXRenderer';
+import BlogThemeToggle from '../components/BlogThemeToggle';
+import BlogComments from '../components/BlogComments';
+import ShareButton from '../components/ShareButton';
 
 const BlogPage = () => {
     const { slug } = useParams();
@@ -12,6 +16,7 @@ const BlogPage = () => {
     const { siteName } = useSiteContext();
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [postNotFound, setPostNotFound] = useState(false);
     const [filters, setFilters] = useState({
         category: '',
         search: ''
@@ -26,6 +31,14 @@ const BlogPage = () => {
     // Analytics hooks
     const analytics = useAnalytics();
     const blogPostAnalytics = useBlogPostAnalytics(currentPost);
+
+    // Add blog-page class to body for CSS targeting
+    useEffect(() => {
+        document.body.classList.add('blog-page');
+        return () => {
+            document.body.classList.remove('blog-page');
+        };
+    }, []);
 
     useEffect(() => {
         if (slug) {
@@ -71,20 +84,31 @@ const BlogPage = () => {
     const fetchSinglePost = async (slug) => {
         try {
             setLoading(true);
+            setPostNotFound(false);
             const response = await fetch(API_ENDPOINTS.BLOG_POST_BY_SLUG(slug));
             
             if (response.ok) {
                 const post = await response.json();
                 setCurrentPost(post);
+                setPostNotFound(false);
             } else {
                 console.error('Failed to fetch post');
                 setCurrentPost(null);
+                setPostNotFound(true);
             }
         } catch (error) {
             console.error('Error fetching post:', error);
             setCurrentPost(null);
+            setPostNotFound(true);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleCommentsUpdate = () => {
+        // Refresh the post to get updated comments
+        if (slug) {
+            fetchSinglePost(slug);
         }
     };
 
@@ -196,18 +220,14 @@ const BlogPage = () => {
         };
 
         return (
-            <nav style={{
-                background: '#ffffff',
-                borderBottom: '1px solid #e5e7eb',
+            <nav className="blog-nav" style={{
                 position: 'sticky',
                 top: 0,
                 zIndex: 50
             }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '64px' }}>
-                        <Link to="/" style={{
-                            textDecoration: 'none',
-                            color: '#111827',
+                        <Link to="/" className="blog-nav-brand" style={{
                             fontSize: '20px',
                             fontWeight: '600'
                         }}>
@@ -215,18 +235,15 @@ const BlogPage = () => {
                         </Link>
                         
                         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                            {user && (
+                            <BlogThemeToggle />
+                            {user && user.is_admin && (
                                 <Link 
                                     to="/admin" 
+                                    className="blog-nav-link"
                                     style={{
-                                        color: '#6b7280',
-                                        textDecoration: 'none',
                                         fontSize: '14px',
-                                        fontWeight: '500',
-                                        transition: 'color 0.2s'
+                                        fontWeight: '500'
                                     }}
-                                    onMouseEnter={(e) => e.target.style.color = '#111827'}
-                                    onMouseLeave={(e) => e.target.style.color = '#6b7280'}
                                 >
                                     Admin
                                 </Link>
@@ -234,15 +251,11 @@ const BlogPage = () => {
                             {!user && (
                                 <Link 
                                     to="/login" 
+                                    className="blog-nav-link"
                                     style={{
-                                        color: '#6b7280',
-                                        textDecoration: 'none',
                                         fontSize: '14px',
-                                        fontWeight: '500',
-                                        transition: 'color 0.2s'
+                                        fontWeight: '500'
                                     }}
-                                    onMouseEnter={(e) => e.target.style.color = '#111827'}
-                                    onMouseLeave={(e) => e.target.style.color = '#6b7280'}
                                 >
                                     Login
                                 </Link>
@@ -250,17 +263,14 @@ const BlogPage = () => {
                             {user && (
                                 <button 
                                     onClick={handleLogout}
+                                    className="blog-nav-link"
                                     style={{
                                         background: 'none',
                                         border: 'none',
-                                        color: '#6b7280',
                                         fontSize: '14px',
                                         fontWeight: '500',
-                                        cursor: 'pointer',
-                                        transition: 'color 0.2s'
+                                        cursor: 'pointer'
                                     }}
-                                    onMouseEnter={(e) => e.target.style.color = '#111827'}
-                                    onMouseLeave={(e) => e.target.style.color = '#6b7280'}
                                 >
                                     Logout
                                 </button>
@@ -272,10 +282,71 @@ const BlogPage = () => {
         );
     };
 
+    // Post Not Found View
+    if (slug && postNotFound && !loading) {
+        return (
+            <div className="blog-container">
+                <Navigation />
+                
+                <div style={{ 
+                    maxWidth: '720px', 
+                    margin: '0 auto', 
+                    padding: '40px 24px',
+                    textAlign: 'center'
+                }}>
+                    {/* Back to Blog Button */}
+                    <div style={{ marginBottom: '40px' }}>
+                        <Link 
+                            to="/" 
+                            className="blog-nav-link"
+                            style={{
+                                fontSize: '14px',
+                                fontWeight: '500'
+                            }}
+                        >
+                            ← Back to all posts
+                        </Link>
+                    </div>
+
+                    <div style={{ padding: '80px 20px' }}>
+                        <h1 className="blog-post-title" style={{
+                            fontSize: '2.5rem',
+                            fontWeight: '700',
+                            marginBottom: '16px'
+                        }}>
+                            Post Not Found
+                        </h1>
+                        <p className="blog-post-meta" style={{
+                            fontSize: '16px',
+                            lineHeight: '1.5',
+                            marginBottom: '32px'
+                        }}>
+                            The blog post you're looking for doesn't exist or has been removed.
+                        </p>
+                        <Link
+                            to="/"
+                            className="blog-button"
+                            style={{
+                                display: 'inline-block',
+                                padding: '12px 24px',
+                                borderRadius: '6px',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                textDecoration: 'none'
+                            }}
+                        >
+                            View All Posts
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // Single Post View
     if (slug && currentPost) {
         return (
-            <div style={{ minHeight: '100vh', background: '#ffffff' }}>
+            <div className="blog-container">
                 <Navigation />
                 
                 <article style={{ 
@@ -287,15 +358,11 @@ const BlogPage = () => {
                     <div style={{ marginBottom: '40px' }}>
                         <Link 
                             to="/" 
+                            className="blog-nav-link"
                             style={{
-                                color: '#6b7280',
-                                textDecoration: 'none',
                                 fontSize: '14px',
-                                fontWeight: '500',
-                                transition: 'color 0.2s'
+                                fontWeight: '500'
                             }}
-                            onMouseEnter={(e) => e.target.style.color = '#111827'}
-                            onMouseLeave={(e) => e.target.style.color = '#6b7280'}
                         >
                             ← Back to all posts
                         </Link>
@@ -305,8 +372,7 @@ const BlogPage = () => {
                     <header style={{ marginBottom: '40px' }}>
                         {currentPost.category && (
                             <div style={{ marginBottom: '16px' }}>
-                                <span style={{
-                                    color: '#6b7280',
+                                <span className="blog-post-meta" style={{
                                     fontSize: '14px',
                                     fontWeight: '500'
                                 }}>
@@ -315,10 +381,9 @@ const BlogPage = () => {
                             </div>
                         )}
                         
-                        <h1 style={{
+                        <h1 className="blog-post-title" style={{
                             fontSize: '2.5rem',
                             fontWeight: '700',
-                            color: '#111827',
                             lineHeight: '1.1',
                             margin: '0 0 20px 0',
                             letterSpacing: '-0.025em'
@@ -326,17 +391,19 @@ const BlogPage = () => {
                             {currentPost.title}
                         </h1>
                         
-                        <div style={{
+                        <div className="blog-post-meta" style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '16px',
-                            color: '#6b7280',
+                            justifyContent: 'space-between',
                             fontSize: '14px',
                             fontWeight: '500'
                         }}>
-                            <time>{formatDate(currentPost.published_at || currentPost.created_at)}</time>
-                            <span>•</span>
-                            <span>{Math.ceil(currentPost.content.split(' ').length / 200)} min read</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                <time>{formatDate(currentPost.published_at || currentPost.created_at)}</time>
+                                <span>•</span>
+                                <span>{Math.ceil(currentPost.content.split(' ').length / 200)} min read</span>
+                            </div>
+                            <ShareButton post={currentPost} />
                         </div>
                     </header>
 
@@ -360,8 +427,7 @@ const BlogPage = () => {
                     )}
                     
                     {/* Post Content */}
-                    <div style={{
-                        color: '#374151',
+                    <div className="blog-post-content" style={{
                         fontSize: '18px',
                         lineHeight: '1.7',
                         fontWeight: '400',
@@ -372,18 +438,17 @@ const BlogPage = () => {
                     
                     {/* Tags */}
                     {currentPost.tags && (
-                        <div style={{
+                        <div className="blog-divider" style={{
                             paddingTop: '32px',
-                            borderTop: '1px solid #e5e7eb',
+                            borderTop: '1px solid',
                             marginBottom: '40px'
                         }}>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                                 {currentPost.tags.split(',').map((tag, index) => (
                                     <span 
-                                        key={index} 
+                                        key={index}
+                                        className="blog-tag" 
                                         style={{
-                                            background: '#f3f4f6',
-                                            color: '#6b7280',
                                             padding: '4px 12px',
                                             borderRadius: '16px',
                                             fontSize: '14px',
@@ -397,19 +462,22 @@ const BlogPage = () => {
                         </div>
                     )}
                     
+                    {/* Comments Section */}
+                    <BlogComments 
+                        post={currentPost} 
+                        comments={currentPost.comments || []}
+                        onCommentsUpdate={handleCommentsUpdate}
+                    />
+                    
                     {/* Back to posts link */}
-                    <div style={{ textAlign: 'center', paddingTop: '32px', borderTop: '1px solid #e5e7eb' }}>
+                    <div className="blog-divider" style={{ textAlign: 'center', paddingTop: '32px', borderTop: '1px solid' }}>
                         <Link
                             to="/"
+                            className="blog-nav-link"
                             style={{
-                                color: '#6b7280',
-                                textDecoration: 'none',
                                 fontSize: '14px',
-                                fontWeight: '500',
-                                transition: 'color 0.2s'
+                                fontWeight: '500'
                             }}
-                            onMouseEnter={(e) => e.target.style.color = '#111827'}
-                            onMouseLeave={(e) => e.target.style.color = '#6b7280'}
                         >
                             ← Back to all posts
                         </Link>
@@ -421,18 +489,7 @@ const BlogPage = () => {
 
     // Blog Listing View
     return (
-        <div style={{ minHeight: '100vh', background: '#ffffff' }}>
-            <style>{`
-                .blog-light-input, .blog-light-select {
-                    background-color: #ffffff !important;
-                    color: #374151 !important;
-                    border: 1px solid #d1d5db !important;
-                }
-                .blog-light-input:focus, .blog-light-select:focus {
-                    border-color: #3b82f6 !important;
-                    box-shadow: none !important;
-                }
-            `}</style>
+        <div className="blog-container">
             <Navigation />
             
             <div style={{ 
@@ -442,17 +499,15 @@ const BlogPage = () => {
             }}>
                 {/* Header */}
                 <div style={{ marginBottom: '40px' }}>
-                    <h1 style={{
+                    <h1 className="blog-post-title" style={{
                         fontSize: '2.5rem',
                         fontWeight: '700',
-                        color: '#111827',
                         margin: '0 0 8px 0',
                         letterSpacing: '-0.025em'
                     }}>
                         All Posts
                     </h1>
-                    <p style={{
-                        color: '#6b7280',
+                    <p className="blog-post-meta" style={{
                         fontSize: '16px',
                         margin: 0
                     }}>
@@ -462,12 +517,10 @@ const BlogPage = () => {
 
                 {/* Filters Section */}
                 {(categories.length > 0 || filters.search) && (
-                    <div style={{
-                        backgroundColor: '#f9fafb',
+                    <div className="blog-filters" style={{
                         borderRadius: '8px',
                         padding: '20px',
-                        marginBottom: '40px',
-                        border: '1px solid #e5e7eb'
+                        marginBottom: '40px'
                     }}>
                         <div style={{
                             display: 'flex',
@@ -480,7 +533,7 @@ const BlogPage = () => {
                                 placeholder="Search posts..."
                                 value={filters.search}
                                 onChange={(e) => handleSearchInput(e.target.value)}
-                                className="blog-light-input"
+                                className="blog-input"
                                 style={{
                                     flex: 1,
                                     minWidth: '200px',
@@ -490,14 +543,12 @@ const BlogPage = () => {
                                     outline: 'none',
                                     transition: 'border-color 0.2s'
                                 }}
-                                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-                                onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                             />
                             {categories.length > 0 && (
                                 <select
                                     value={filters.category}
                                     onChange={(e) => handleCategoryFilter(e.target.value)}
-                                    className="blog-light-select"
+                                    className="blog-select"
                                     style={{
                                         padding: '8px 12px',
                                         borderRadius: '6px',
@@ -505,8 +556,6 @@ const BlogPage = () => {
                                         outline: 'none',
                                         transition: 'border-color 0.2s'
                                     }}
-                                    onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-                                    onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                                 >
                                     <option value="">All categories</option>
                                     {categories.map(category => (
@@ -519,24 +568,13 @@ const BlogPage = () => {
                             {(filters.category || filters.search) && (
                                 <button
                                     onClick={handleClearFilters}
+                                    className="blog-button"
                                     style={{
                                         padding: '8px 16px',
-                                        backgroundColor: '#ffffff',
-                                        color: '#6b7280',
-                                        border: '1px solid #d1d5db',
                                         borderRadius: '6px',
                                         fontSize: '14px',
                                         fontWeight: '500',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.target.style.backgroundColor = '#f3f4f6';
-                                        e.target.style.color = '#374151';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.target.style.backgroundColor = '#ffffff';
-                                        e.target.style.color = '#6b7280';
+                                        cursor: 'pointer'
                                     }}
                                 >
                                     Clear
@@ -554,8 +592,7 @@ const BlogPage = () => {
                         alignItems: 'center',
                         padding: '80px 0'
                     }}>
-                        <span style={{
-                            color: '#6b7280',
+                        <span className="blog-post-meta" style={{
                             fontSize: '16px',
                             fontWeight: '500'
                         }}>
@@ -577,23 +614,15 @@ const BlogPage = () => {
                                     }}
                                 >
                                     <article 
+                                        className="blog-card"
                                         style={{
                                             padding: '24px',
-                                            borderBottom: '1px solid #e5e7eb',
-                                            transition: 'background-color 0.2s',
                                             cursor: 'pointer'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.backgroundColor = '#f9fafb';
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.backgroundColor = 'transparent';
                                         }}
                                     >
                                         {post.category && (
                                             <div style={{ marginBottom: '8px' }}>
-                                                <span style={{
-                                                    color: '#6b7280',
+                                                <span className="blog-post-meta" style={{
                                                     fontSize: '14px',
                                                     fontWeight: '500'
                                                 }}>
@@ -602,10 +631,9 @@ const BlogPage = () => {
                                             </div>
                                         )}
                                         
-                                        <h2 style={{
+                                        <h2 className="blog-post-title" style={{
                                             fontSize: '20px',
                                             fontWeight: '600',
-                                            color: '#111827',
                                             marginBottom: '8px',
                                             lineHeight: '1.3',
                                             margin: '0 0 8px 0'
@@ -614,8 +642,7 @@ const BlogPage = () => {
                                         </h2>
                                         
                                         {post.excerpt && (
-                                            <p style={{
-                                                color: '#6b7280',
+                                            <p className="blog-post-meta" style={{
                                                 marginBottom: '16px',
                                                 lineHeight: '1.5',
                                                 margin: '0 0 16px 0'
@@ -624,12 +651,11 @@ const BlogPage = () => {
                                             </p>
                                         )}
                                         
-                                        <div style={{
+                                        <div className="blog-post-meta" style={{
                                             display: 'flex',
                                             alignItems: 'center',
                                             gap: '16px',
                                             fontSize: '14px',
-                                            color: '#6b7280',
                                             fontWeight: '500'
                                         }}>
                                             <time>{formatDate(post.published_at || post.created_at)}</time>
@@ -643,38 +669,34 @@ const BlogPage = () => {
 
                         {/* Pagination */}
                         {pagination.pages > 1 && (
-                            <div style={{
+                            <div className="blog-divider" style={{
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 gap: '16px',
                                 marginTop: '48px',
                                 paddingTop: '32px',
-                                borderTop: '1px solid #e5e7eb'
+                                borderTop: '1px solid'
                             }}>
                                 {pagination.current_page > 1 && (
                                     <button
                                         onClick={() => handlePageChange(pagination.current_page - 1)}
+                                        className="blog-nav-link"
                                         style={{
                                             padding: '8px 16px',
-                                            color: '#6b7280',
                                             backgroundColor: 'transparent',
                                             border: 'none',
                                             fontSize: '14px',
                                             fontWeight: '500',
-                                            cursor: 'pointer',
-                                            transition: 'color 0.2s'
+                                            cursor: 'pointer'
                                         }}
-                                        onMouseEnter={(e) => e.target.style.color = '#111827'}
-                                        onMouseLeave={(e) => e.target.style.color = '#6b7280'}
                                     >
                                         ← Previous
                                     </button>
                                 )}
                                 
-                                <span style={{
+                                <span className="blog-post-meta" style={{
                                     fontSize: '14px',
-                                    color: '#6b7280',
                                     fontWeight: '500'
                                 }}>
                                     Page {pagination.current_page} of {pagination.pages}
@@ -683,18 +705,15 @@ const BlogPage = () => {
                                 {pagination.current_page < pagination.pages && (
                                     <button
                                         onClick={() => handlePageChange(pagination.current_page + 1)}
+                                        className="blog-nav-link"
                                         style={{
                                             padding: '8px 16px',
-                                            color: '#6b7280',
                                             backgroundColor: 'transparent',
                                             border: 'none',
                                             fontSize: '14px',
                                             fontWeight: '500',
-                                            cursor: 'pointer',
-                                            transition: 'color 0.2s'
+                                            cursor: 'pointer'
                                         }}
-                                        onMouseEnter={(e) => e.target.style.color = '#111827'}
-                                        onMouseLeave={(e) => e.target.style.color = '#6b7280'}
                                     >
                                         Next →
                                     </button>
@@ -707,14 +726,12 @@ const BlogPage = () => {
                         textAlign: 'center',
                         padding: '80px 20px'
                     }}>
-                        <h3 style={{
+                        <h3 className="blog-post-title" style={{
                             fontSize: '20px',
                             fontWeight: '600',
-                            color: '#111827',
                             marginBottom: '8px'
                         }}>No posts found</h3>
-                        <p style={{
-                            color: '#6b7280',
+                        <p className="blog-post-meta" style={{
                             fontSize: '16px',
                             lineHeight: '1.5',
                             margin: 0

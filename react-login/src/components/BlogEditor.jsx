@@ -22,6 +22,8 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
   const [showPreview, setShowPreview] = useState(false);
   const [wordCount, setWordCount] = useState(0);
   const [estimatedReadTime, setEstimatedReadTime] = useState(0);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [contentTextarea, setContentTextarea] = useState(null);
 
   useEffect(() => {
     fetchCategories();
@@ -137,6 +139,96 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
     if (formData.title || formData.content) {
       localStorage.setItem('blog_draft', JSON.stringify(formData));
     }
+  };
+
+  const handleImageUpload = async (file) => {
+    setIsUploadingImage(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      const token = localStorage.getItem('token');
+      const response = await fetch(API_ENDPOINTS.UPLOAD_IMAGE, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Upload failed');
+      }
+      
+      const data = await response.json();
+      return data.image_url;
+      
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const insertImageAtCursor = (imageUrl) => {
+    if (!contentTextarea) return;
+    
+    const start = contentTextarea.selectionStart;
+    const end = contentTextarea.selectionEnd;
+    const currentContent = formData.content;
+    const imageMarkdown = `\n![Image](${imageUrl})\n`;
+    
+    const newContent = currentContent.substring(0, start) + imageMarkdown + currentContent.substring(end);
+    
+    setFormData(prev => ({
+      ...prev,
+      content: newContent
+    }));
+    
+    // Focus back to textarea and set cursor position
+    setTimeout(() => {
+      if (contentTextarea) {
+        contentTextarea.focus();
+        const newCursorPos = start + imageMarkdown.length;
+        contentTextarea.setSelectionRange(newCursorPos, newCursorPos);
+      }
+    }, 0);
+  };
+
+  const handleImageButtonClick = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.multiple = false;
+    
+    input.onchange = async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setServerError('Image file size must be less than 5MB');
+        return;
+      }
+      
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setServerError('Please select a valid image file');
+        return;
+      }
+      
+      try {
+        const imageUrl = await handleImageUpload(file);
+        insertImageAtCursor(imageUrl);
+      } catch (error) {
+        setServerError(error.message || 'Failed to upload image');
+      }
+    };
+    
+    input.click();
   };
 
   useEffect(() => {
@@ -483,9 +575,72 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                 </div>
               )}
 
+              {/* Editor Toolbar */}
+              <div style={{
+                marginBottom: '16px',
+                padding: '12px 16px',
+                backgroundColor: '#334155',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                border: '1px solid #475569'
+              }}>
+                <div style={{ fontSize: '12px', color: '#9ca3af', fontWeight: '500', textTransform: 'uppercase' }}>
+                  Formatting Tools:
+                </div>
+                
+                <button
+                  onClick={handleImageButtonClick}
+                  disabled={isUploadingImage}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 12px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    color: isUploadingImage ? '#6b7280' : '#f1f5f9',
+                    backgroundColor: isUploadingImage ? '#1e293b' : '#475569',
+                    border: '1px solid #64748b',
+                    borderRadius: '6px',
+                    cursor: isUploadingImage ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.2s',
+                    opacity: isUploadingImage ? 0.6 : 1
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isUploadingImage) {
+                      e.target.style.backgroundColor = '#64748b';
+                      e.target.style.borderColor = '#94a3b8';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isUploadingImage) {
+                      e.target.style.backgroundColor = '#475569';
+                      e.target.style.borderColor = '#64748b';
+                    }
+                  }}
+                >
+                  <span>{isUploadingImage ? '⏳' : '📷'}</span>
+                  {isUploadingImage ? 'Uploading...' : 'Insert Image'}
+                </button>
+                
+                <div style={{ 
+                  height: '16px', 
+                  width: '1px', 
+                  backgroundColor: '#64748b',
+                  margin: '0 4px'
+                }}></div>
+                
+                <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                  💡 Tip: Use ![alt](url) for images, **bold**, *italic*, and LaTeX math: $equation$
+                </div>
+              </div>
+
               {/* Content Textarea */}
               <div style={{ marginBottom: '32px' }}>
                 <textarea
+                  ref={(ref) => setContentTextarea(ref)}
                   name="content"
                   value={formData.content}
                   onChange={handleInputChange}
@@ -529,9 +684,6 @@ const BlogEditor = ({ post = null, onSave, onCancel }) => {
                     {errors.content}
                   </p>
                 )}
-                <div style={{ marginTop: '8px', fontSize: '14px', color: '#6b7280' }}>
-                  <div>💡 Tip: Use LaTeX for math ($inline$ or $$block$$) and Markdown for formatting</div>
-                </div>
               </div>
             </div>
           </div>

@@ -158,7 +158,6 @@ function PageHeaders() {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                   <span style={{ fontSize: '13px', opacity: 0.9 }}>{user?.username || 'User'}</span>
-                  <span style={{ fontSize: '11px', opacity: 0.7 }}>Premium Member</span>
                 </div>
               </div>
               
@@ -414,61 +413,6 @@ function PageHeaders() {
             Settings
           </Link>
 
-          {/* User Account Section */}
-          <div style={{ 
-            position: 'absolute', 
-            bottom: '20px', 
-            left: '0', 
-            right: '0',
-            padding: '0 20px'
-          }}>
-            <div style={{ 
-              height: '1px', 
-              background: 'rgba(255,255,255,0.2)', 
-              margin: '20px 0 15px 0' 
-            }}></div>
-            
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: '12px',
-              backgroundColor: 'rgba(255,255,255,0.1)',
-              borderRadius: '12px',
-              marginBottom: '15px'
-            }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                background: APP_CONFIG.THEME.ACCENT_COLOR,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '18px',
-                fontWeight: '600',
-                color: 'white',
-                marginRight: '12px'
-              }}>
-                {user?.username?.charAt(0).toUpperCase() || 'U'}
-              </div>
-              <div>
-                <div style={{ 
-                  color: 'white', 
-                  fontSize: '14px', 
-                  fontWeight: '600',
-                  marginBottom: '2px'
-                }}>
-                  {user?.username || 'Admin'}
-                </div>
-                <div style={{ 
-                  color: 'rgba(255,255,255,0.7)', 
-                  fontSize: '12px'
-                }}>
-                  Content Manager
-                </div>
-              </div>
-            </div>
-          </div>
         </nav>
       </div>
     </>
